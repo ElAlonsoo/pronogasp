@@ -1,10 +1,142 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-<title>Mon Tracker Paris</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracker Paris Coupe du Monde</title>
+<style>
+body{font-family:Arial;margin:0;background:#061a40;color:white}
+header{text-align:center;padding:25px;background:#001f54}
+h1{color:#ffd700}
+.container{padding:20px;max-width:1000px;margin:auto}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.card{background:#0b2a66;padding:15px;border-radius:14px;text-align:center}
+.card b{color:#ffd700;font-size:22px}
+.form{background:#0b2a66;padding:15px;border-radius:14px;margin-bottom:20px}
+input,select,button{width:100%;padding:12px;margin:6px 0;border:none;border-radius:10px;font-size:16px}
+button{background:#ffd700;font-weight:bold;cursor:pointer}
+table{width:100%;border-collapse:collapse;background:white;color:black;border-radius:12px;overflow:hidden}
+th{background:#ffd700;padding:10px}
+td{padding:10px;text-align:center;border-bottom:1px solid #ddd}
+.win{background:#c8f7c5}
+.lose{background:#ffb6b6}
+.delete{background:#ff4444;color:white;padding:6px 10px;border-radius:8px;cursor:pointer}
+</style>
 </head>
 <body>
-<h1>🏆 Mon Tracker Coupe du Monde</h1>
-<p>Le site fonctionne !</p>
+
+<header>
+<h1>🏆 Coupe du Monde - Tracker Paris</h1>
+<p>Suis tes mises, gains, pertes et stats</p>
+</header>
+
+<div class="container">
+
+<div class="stats">
+  <div class="card">💰 Profit<br><b id="profit">0 €</b></div>
+  <div class="card">💵 Total misé<br><b id="totalMise">0 €</b></div>
+  <div class="card">🎯 Gagnés<br><b id="wins">0</b></div>
+  <div class="card">❌ Perdus<br><b id="losses">0</b></div>
+  <div class="card">📈 ROI<br><b id="roi">0%</b></div>
+</div>
+
+<div class="form">
+<input id="date" type="date">
+<input id="match" placeholder="Match ex: France - Brésil">
+<input id="mise" type="number" placeholder="Mise en €">
+<input id="cote" type="number" step="0.01" placeholder="Cote">
+<select id="resultat">
+<option value="Gagné">Gagné</option>
+<option value="Perdu">Perdu</option>
+</select>
+<button onclick="ajouterPari()">Ajouter le pari</button>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Match</th>
+<th>Mise</th>
+<th>Cote</th>
+<th>Résultat</th>
+<th>Gain/Perte</th>
+<th>Supprimer</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+
+</div>
+
+<script>
+let paris = JSON.parse(localStorage.getItem("paris")) || [];
+
+function ajouterPari(){
+  let date = document.getElementById("date").value;
+  let match = document.getElementById("match").value;
+  let mise = Number(document.getElementById("mise").value);
+  let cote = Number(document.getElementById("cote").value);
+  let resultat = document.getElementById("resultat").value;
+
+  if(!date || !match || !mise || !cote){
+    alert("Remplis toutes les cases");
+    return;
+  }
+
+  let gain = resultat === "Gagné" ? mise * (cote - 1) : -mise;
+
+  paris.push({date, match, mise, cote, resultat, gain});
+  localStorage.setItem("paris", JSON.stringify(paris));
+  afficher();
+
+  document.getElementById("match").value = "";
+  document.getElementById("mise").value = "";
+  document.getElementById("cote").value = "";
+}
+
+function supprimerPari(index){
+  paris.splice(index,1);
+  localStorage.setItem("paris", JSON.stringify(paris));
+  afficher();
+}
+
+function afficher(){
+  let table = document.getElementById("table");
+  table.innerHTML = "";
+
+  let profit = 0;
+  let totalMise = 0;
+  let wins = 0;
+  let losses = 0;
+
+  paris.forEach((p,index)=>{
+    profit += p.gain;
+    totalMise += p.mise;
+    if(p.resultat === "Gagné") wins++;
+    else losses++;
+
+    table.innerHTML += `
+    <tr class="${p.gain >= 0 ? 'win' : 'lose'}">
+      <td>${p.date}</td>
+      <td>${p.match}</td>
+      <td>${p.mise.toFixed(2)} €</td>
+      <td>${p.cote}</td>
+      <td>${p.resultat}</td>
+      <td>${p.gain.toFixed(2)} €</td>
+      <td><span class="delete" onclick="supprimerPari(${index})">X</span></td>
+    </tr>`;
+  });
+
+  document.getElementById("profit").innerText = profit.toFixed(2) + " €";
+  document.getElementById("totalMise").innerText = totalMise.toFixed(2) + " €";
+  document.getElementById("wins").innerText = wins;
+  document.getElementById("losses").innerText = losses;
+  document.getElementById("roi").innerText = totalMise ? ((profit/totalMise)*100).toFixed(1) + "%" : "0%";
+}
+
+afficher();
+</script>
+
 </body>
 </html>
