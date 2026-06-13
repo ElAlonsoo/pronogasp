@@ -7,16 +7,7 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#020b1f,#061a40,#0b2a66);color:white}
-header{
-  text-align:center;
-  padding:55px 15px;
-  background:
-  linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),
-  url('IMG_4882.webp');
-  background-size:cover;
-  background-position:center;
-  border-bottom:4px solid #00ff66;
-}
+header{text-align:center;padding:55px 15px;background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),url('IMG_4882.webp');background-size:cover;background-position:center;border-bottom:4px solid #00ff66}
 h1{color:#00ff66;margin:10px 0;font-size:42px;text-shadow:0 0 12px #00ff66,0 0 25px #00ff66}
 .container{max-width:1150px;margin:auto;padding:18px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}
@@ -40,6 +31,7 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 .playing-card{width:78px;height:110px;background:white;color:#111;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;border:3px solid #111}
 .card-back{background:linear-gradient(135deg,#111,#333);color:#ffd700;font-size:13px;text-align:center}
 .footer{text-align:center;opacity:.8;padding:22px}
+.auth{border:2px solid #ffd700}
 </style>
 </head>
 
@@ -47,10 +39,22 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 <header>
   <div style="font-size:55px">👁️ 💸 🏆 ⚽ 🐐 🃏</div>
   <h1>PARIS DE GASPARD LE GOAT</h1>
-  <p>Pronogasp + BlackGasp virtuel</p>
+  <p>Pronogasp + BlackGasp connecté</p>
 </header>
 
 <div class="container">
+
+<div class="box auth">
+  <h2>🔐 Connexion Pronogasp</h2>
+  <p id="authStatus">Pas connecté</p>
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Mot de passe">
+  <button onclick="signup()">Créer le compte</button>
+  <button onclick="login()">Se connecter</button>
+  <button onclick="logout()">Se déconnecter</button>
+</div>
+
+<div id="app" style="display:none">
 
 <div class="stats">
   <div class="card">💰 Profit total<b id="profit">0 €</b></div>
@@ -122,14 +126,95 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 </div>
 
 </div>
+</div>
 
 <div class="footer">🏆 GASPARD LE GOAT • PRONOGASP • BLACKGASP 🐐</div>
 
-<script>
-let paris=JSON.parse(localStorage.getItem("paris"))||[];
-function euro(n){return Number(n).toFixed(2)+" €"}
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-function ajouterPari(){
+const firebaseConfig = {
+  apiKey: "AIzaSyCLWj8oCfZ3ZJe1ezS7QilSfpY237MikcQ",
+  authDomain: "pronogasp.firebaseapp.com",
+  projectId: "pronogasp",
+  storageBucket: "pronogasp.firebasestorage.app",
+  messagingSenderId: "652117666308",
+  appId: "1:652117666308:web:c1a640b4f609d81043a351",
+  measurementId: "G-J6J47CEGXK"
+};
+
+const appFirebase = initializeApp(firebaseConfig);
+const auth = getAuth(appFirebase);
+const db = getFirestore(appFirebase);
+
+let currentUser = null;
+let unsubscribe = null;
+let paris = [];
+let bj = {balance:5000,start:5000,wins:0,losses:0,pushes:0};
+
+function euro(n){return Number(n).toFixed(2)+" €"}
+function userDoc(){return doc(db,"users",currentUser.uid,"data","main")}
+
+async function saveCloud(){
+ if(!currentUser)return;
+ await setDoc(userDoc(),{paris,bj},{merge:true});
+}
+
+window.signup = async function(){
+ const email=document.getElementById("email").value;
+ const password=document.getElementById("password").value;
+ try{await createUserWithEmailAndPassword(auth,email,password)}
+ catch(e){alert(e.message)}
+}
+
+window.login = async function(){
+ const email=document.getElementById("email").value;
+ const password=document.getElementById("password").value;
+ try{await signInWithEmailAndPassword(auth,email,password)}
+ catch(e){alert(e.message)}
+}
+
+window.logout = async function(){
+ await signOut(auth);
+}
+
+onAuthStateChanged(auth, async (user)=>{
+ currentUser=user;
+ if(unsubscribe)unsubscribe();
+
+ if(!user){
+  document.getElementById("authStatus").innerText="Pas connecté";
+  document.getElementById("app").style.display="none";
+  return;
+ }
+
+ document.getElementById("authStatus").innerText="Connecté : "+user.email;
+ document.getElementById("app").style.display="block";
+
+ const snap = await getDoc(userDoc());
+
+ if(!snap.exists()){
+  const oldParis = JSON.parse(localStorage.getItem("paris")) || [];
+  const oldBJ = JSON.parse(localStorage.getItem("blackgasp")) || bj;
+  paris = oldParis;
+  bj = oldBJ;
+  await saveCloud();
+ }
+
+ unsubscribe = onSnapshot(userDoc(),(docSnap)=>{
+  if(docSnap.exists()){
+   const data=docSnap.data();
+   paris=data.paris||[];
+   bj=data.bj||{balance:5000,start:5000,wins:0,losses:0,pushes:0};
+   afficher();
+   render(false);
+  }
+ });
+});
+
+window.ajouterPari = async function(){
  let date=document.getElementById("date").value;
  let match=document.getElementById("match").value;
  let mise=Number(document.getElementById("mise").value);
@@ -138,14 +223,17 @@ function ajouterPari(){
  if(!date||!match||!mise||!cote){alert("Remplis toutes les cases");return}
  let gain=resultat==="Gagné"?mise*(cote-1):-mise;
  paris.push({date,match,mise,cote,resultat,gain});
- localStorage.setItem("paris",JSON.stringify(paris));
+ await saveCloud();
+ document.getElementById("match").value="";
+ document.getElementById("mise").value="";
+ document.getElementById("cote").value="";
  afficher();
 }
 
-function supprimerPari(i){
+window.supprimerPari = async function(i){
  if(confirm("Supprimer ce pari ?")){
   paris.splice(i,1);
-  localStorage.setItem("paris",JSON.stringify(paris));
+  await saveCloud();
   afficher();
  }
 }
@@ -178,11 +266,11 @@ function afficher(){
  document.getElementById("winRateBar").innerText=success.toFixed(1)+"%";
 }
 
-let bj=JSON.parse(localStorage.getItem("blackgasp"))||{balance:5000,start:5000,wins:0,losses:0,pushes:0};
 let deck=[],player=[],dealer=[],currentBet=0,playing=false,canDouble=false,canSplit=false,splitMode=false,splitHands=[],activeHand=0,splitBets=[];
 
-function saveBJ(){
- localStorage.setItem("blackgasp",JSON.stringify(bj));
+async function saveBJ(){await saveCloud()}
+
+function updateBJDisplay(){
  document.getElementById("bjBalance").innerText=euro(bj.balance);
  document.getElementById("bjWins").innerText=bj.wins;
  document.getElementById("bjLosses").innerText=bj.losses;
@@ -219,19 +307,19 @@ function isBJ(hand){return hand.length===2&&value(hand)===21}
 function cardHTML(c,hide=false){return hide?`<div class="playing-card card-back">BlackGasp</div>`:`<div class="playing-card">${c.v}${c.s}</div>`}
 
 function render(hideDealer=true){
+ updateBJDisplay();
  let handToShow=splitMode?splitHands[activeHand]:player;
  document.getElementById("playerCards").innerHTML=handToShow.map(c=>cardHTML(c)).join("");
  document.getElementById("dealerCards").innerHTML=dealer.map((c,i)=>cardHTML(c,hideDealer&&i===1&&playing)).join("");
- document.getElementById("playerScore").innerText=value(handToShow);
- document.getElementById("dealerScore").innerText=hideDealer&&playing?value([dealer[0]]):value(dealer);
+ document.getElementById("playerScore").innerText=handToShow.length?value(handToShow):"";
+ document.getElementById("dealerScore").innerText=dealer.length?(hideDealer&&playing?value([dealer[0]]):value(dealer)):"";
  document.getElementById("hitBtn").disabled=!playing;
  document.getElementById("standBtn").disabled=!playing;
  document.getElementById("doubleBtn").disabled=!playing||!canDouble||bj.balance<currentBet;
  document.getElementById("splitBtn").disabled=!playing||!canSplit||bj.balance<currentBet;
- saveBJ();
 }
 
-function startBlackjack(){
+window.startBlackjack = async function(){
  currentBet=Number(document.getElementById("bjBet").value);
  if(!currentBet||currentBet<=0){alert("Mets une mise");return}
  if(currentBet>bj.balance){alert("Pas assez de balance");return}
@@ -242,17 +330,17 @@ function startBlackjack(){
  playing=true;canDouble=true;splitMode=false;splitHands=[];activeHand=0;splitBets=[];
  canSplit=player[0].v===player[1].v && bj.balance>=currentBet;
  document.getElementById("bjMessage").innerText="À toi de jouer";
- render(true);
  if(isBJ(player)){
   playing=false;
   bj.balance+=currentBet*2.5;
   bj.wins++;
   document.getElementById("bjMessage").innerText="BLACKJACK BLACKGASP 🔥 +x2.5";
-  render(false);
  }
+ render(!isBJ(player));
+ await saveBJ();
 }
 
-function hit(){
+window.hit = async function(){
  if(!playing)return;
  canDouble=false;canSplit=false;
  let hand=splitMode?splitHands[activeHand]:player;
@@ -260,26 +348,28 @@ function hit(){
  if(value(hand)>21){
   if(splitMode && activeHand===0){
    activeHand=1;
-   canDouble=false;
    document.getElementById("bjMessage").innerText="Main 1 perdue, main 2 à toi";
    render(true);
   }else{
-   stand();
+   await window.stand();
   }
  }else render(true);
+ await saveBJ();
 }
 
-function stand(){
+window.stand = async function(){
  if(!playing)return;
  canDouble=false;canSplit=false;
  if(splitMode && activeHand===0){
   activeHand=1;
   document.getElementById("bjMessage").innerText="Main 2 à toi";
   render(true);
+  await saveBJ();
   return;
  }
  while(value(dealer)<17){dealer.push(deck.pop())}
  finishRound();
+ await saveBJ();
 }
 
 function finishRound(){
@@ -305,7 +395,7 @@ function finishRound(){
  render(false);
 }
 
-function doubleDown(){
+window.doubleDown = async function(){
  if(!playing||!canDouble||bj.balance<currentBet)return;
  bj.balance-=currentBet;
  currentBet*=2;
@@ -315,36 +405,35 @@ function doubleDown(){
  if(value(hand)>21){
   if(splitMode && activeHand===0){activeHand=1;render(true)}
   else finishRound();
- }else stand();
+ }else await window.stand();
+ await saveBJ();
 }
 
-function splitHand(){
+window.splitHand = async function(){
  if(!playing||!canSplit||bj.balance<currentBet)return;
  bj.balance-=currentBet;
  splitMode=true;
- splitHands=[
-  [player[0],deck.pop()],
-  [player[1],deck.pop()]
- ];
+ splitHands=[[player[0],deck.pop()],[player[1],deck.pop()]];
  splitBets=[currentBet,currentBet];
  activeHand=0;
  canSplit=false;
  canDouble=false;
  document.getElementById("bjMessage").innerText="Split activé ✂️ Main 1";
  render(true);
+ await saveBJ();
 }
 
-function resetBJ(){
+window.resetBJ = async function(){
  if(confirm("Reset la balance Blackjack ?")){
   bj={balance:5000,start:5000,wins:0,losses:0,pushes:0};
   player=[];dealer=[];playing=false;splitMode=false;
   document.getElementById("bjMessage").innerText="Mise et lance une partie";
   render(false);
+  await saveBJ();
  }
 }
 
 afficher();
-saveBJ();
 render(false);
 </script>
 </body>
