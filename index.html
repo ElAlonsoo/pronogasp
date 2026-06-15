@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pronogasp</title>
+<title>Coupe du monde 2K26 X Gaspard</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#020b1f,#061a40,#0b2a66);color:white}
@@ -16,7 +16,6 @@ h1{color:#00ff66;margin:10px 0;font-size:42px;text-shadow:0 0 12px #00ff66,0 0 2
 .good{color:#23e36f!important}.bad{color:#ff4d4d!important}
 input,select,button{width:100%;padding:13px;margin:6px 0;border:none;border-radius:12px;font-size:16px}
 button{background:#ffd700;color:#061a40;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.45}
 table{width:100%;border-collapse:collapse;background:white;color:#111;border-radius:16px;overflow:hidden}
 th{background:#ffd700;padding:11px}
 td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
@@ -26,10 +25,6 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 .delete{background:#e63946;color:white;padding:7px 11px;border-radius:8px;cursor:pointer}
 .bar{height:24px;background:#e63946;border-radius:999px;overflow:hidden}
 .bar-inner{height:100%;width:0%;background:#23e36f;color:#061a40;font-weight:bold;line-height:24px}
-.blackjack{background:linear-gradient(135deg,#064420,#0b7a3b);border:3px solid #ffd700}
-.hand{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:15px}
-.playing-card{width:78px;height:110px;background:white;color:#111;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;border:3px solid #111}
-.card-back{background:linear-gradient(135deg,#111,#333);color:#ffd700;font-size:13px;text-align:center}
 .footer{text-align:center;opacity:.8;padding:22px}
 .auth{border:2px solid #ffd700}
 </style>
@@ -37,9 +32,9 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 
 <body>
 <header>
-  <div style="font-size:55px">👁️ 💸 🏆 ⚽ 🐐 🃏</div>
-  <h1>PARIS DE GASPARD LE GOAT</h1>
-  <p>Pronogasp + BlackGasp connecté</p>
+  <div style="font-size:55px">👁️ 💸 🏆 ⚽ 🐐</div>
+  <h1>Coupe du monde 2K26 X Gaspard</h1>
+  <p>Pronostics Coupe du Monde 2026</p>
 </header>
 
 <div class="container">
@@ -88,47 +83,24 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 <div style="overflow-x:auto">
 <table>
 <thead>
-<tr><th>Date</th><th>Match</th><th>Mise</th><th>Cote</th><th>Résultat</th><th>Gain/Perte</th><th>Supprimer</th></tr>
+<tr>
+  <th>Date</th>
+  <th>Match</th>
+  <th>Mise</th>
+  <th>Cote</th>
+  <th>Résultat</th>
+  <th>Gain/Perte</th>
+  <th>Supprimer</th>
+</tr>
 </thead>
 <tbody id="table"></tbody>
 </table>
 </div>
 
-<h2 style="text-align:center;color:#ffd700;margin-top:35px">🃏 BLACKGASP BLACKJACK</h2>
-
-<div class="stats">
-  <div class="card">💰 Balance BJ<b id="bjBalance">5000 €</b></div>
-  <div class="card">🔥 Wins BJ<b id="bjWins">0</b></div>
-  <div class="card">💀 Loss BJ<b id="bjLosses">0</b></div>
-  <div class="card">🤝 Push<b id="bjPushes">0</b></div>
-  <div class="card">📈 Profit BJ<b id="bjProfit">0 €</b></div>
-  <div class="card">🐐 Rang<b id="bjRank">Bronze</b></div>
-</div>
-
-<div class="box blackjack">
-  <input id="bjBet" type="number" placeholder="Mise Blackjack">
-  <button onclick="startBlackjack()">🎲 Nouvelle partie</button>
-
-  <h3>Croupier : <span id="dealerScore"></span></h3>
-  <div class="hand" id="dealerCards"></div>
-
-  <h3>Gaspard : <span id="playerScore"></span></h3>
-  <div class="hand" id="playerCards"></div>
-
-  <button id="hitBtn" onclick="hit()">➕ Tirer</button>
-  <button id="standBtn" onclick="stand()">✋ Rester</button>
-  <button id="doubleBtn" onclick="doubleDown()">💥 Double</button>
-  <button id="splitBtn" onclick="splitHand()">✂️ Diviser</button>
-
-  <h2 id="bjMessage">Mise et lance une partie</h2>
-  <p>Argent 100% virtuel. Blackjack naturel payé x2.5.</p>
-  <button onclick="resetBJ()">🔄 Reset Blackjack</button>
-</div>
-
 </div>
 </div>
 
-<div class="footer">🏆 GASPARD LE GOAT • PRONOGASP • BLACKGASP 🐐</div>
+<div class="footer">🏆 Coupe du monde 2K26 X Gaspard 🐐</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
@@ -152,289 +124,179 @@ const db = getFirestore(appFirebase);
 let currentUser = null;
 let unsubscribe = null;
 let paris = [];
-let bj = {balance:5000,start:5000,wins:0,losses:0,pushes:0};
 
-function euro(n){return Number(n).toFixed(2)+" €"}
-function userDoc(){return doc(db,"users",currentUser.uid,"data","main")}
+function euro(n){
+  return Number(n).toFixed(2) + " €";
+}
+
+function userDoc(){
+  return doc(db, "users", currentUser.uid, "data", "main");
+}
 
 async function saveCloud(){
- if(!currentUser)return;
- await setDoc(userDoc(),{paris,bj},{merge:true});
+  if(!currentUser) return;
+  await setDoc(userDoc(), { paris }, { merge:true });
 }
 
 window.signup = async function(){
- const email=document.getElementById("email").value;
- const password=document.getElementById("password").value;
- try{await createUserWithEmailAndPassword(auth,email,password)}
- catch(e){alert(e.message)}
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try{
+    await createUserWithEmailAndPassword(auth, email, password);
+  }catch(e){
+    alert(e.message);
+  }
 }
 
 window.login = async function(){
- const email=document.getElementById("email").value;
- const password=document.getElementById("password").value;
- try{await signInWithEmailAndPassword(auth,email,password)}
- catch(e){alert(e.message)}
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try{
+    await signInWithEmailAndPassword(auth, email, password);
+  }catch(e){
+    alert(e.message);
+  }
 }
 
 window.logout = async function(){
- await signOut(auth);
+  await signOut(auth);
 }
 
 onAuthStateChanged(auth, async (user)=>{
- currentUser=user;
- if(unsubscribe)unsubscribe();
+  currentUser = user;
 
- if(!user){
-  document.getElementById("authStatus").innerText="Pas connecté";
-  document.getElementById("app").style.display="none";
-  return;
- }
+  if(unsubscribe) unsubscribe();
 
- document.getElementById("authStatus").innerText="Connecté : "+user.email;
- document.getElementById("app").style.display="block";
-
- const snap = await getDoc(userDoc());
-
- if(!snap.exists()){
-  const oldParis = JSON.parse(localStorage.getItem("paris")) || [];
-  const oldBJ = JSON.parse(localStorage.getItem("blackgasp")) || bj;
-  paris = oldParis;
-  bj = oldBJ;
-  await saveCloud();
- }
-
- unsubscribe = onSnapshot(userDoc(),(docSnap)=>{
-  if(docSnap.exists()){
-   const data=docSnap.data();
-   paris=data.paris||[];
-   bj=data.bj||{balance:5000,start:5000,wins:0,losses:0,pushes:0};
-   afficher();
-   render(false);
+  if(!user){
+    document.getElementById("authStatus").innerText = "Pas connecté";
+    document.getElementById("app").style.display = "none";
+    return;
   }
- });
+
+  document.getElementById("authStatus").innerText = "Connecté : " + user.email;
+  document.getElementById("app").style.display = "block";
+
+  const snap = await getDoc(userDoc());
+
+  if(!snap.exists()){
+    const oldParis = JSON.parse(localStorage.getItem("paris")) || [];
+    paris = oldParis;
+    await saveCloud();
+  }
+
+  unsubscribe = onSnapshot(userDoc(), (docSnap)=>{
+    if(docSnap.exists()){
+      const data = docSnap.data();
+      paris = data.paris || [];
+      afficher();
+    }
+  });
 });
 
 window.ajouterPari = async function(){
- let date=document.getElementById("date").value;
- let match=document.getElementById("match").value;
- let mise=Number(document.getElementById("mise").value);
- let cote=Number(document.getElementById("cote").value);
- let resultat=document.getElementById("resultat").value;
- if(!date||!match||!mise||!cote){alert("Remplis toutes les cases");return}
- let gain=resultat==="Gagné"?mise*(cote-1):-mise;
- paris.push({date,match,mise,cote,resultat,gain});
- await saveCloud();
- document.getElementById("match").value="";
- document.getElementById("mise").value="";
- document.getElementById("cote").value="";
- afficher();
+  let date = document.getElementById("date").value;
+  let match = document.getElementById("match").value;
+  let mise = Number(document.getElementById("mise").value);
+  let cote = Number(document.getElementById("cote").value);
+  let resultat = document.getElementById("resultat").value;
+
+  if(!date || !match || !mise || !cote){
+    alert("Remplis toutes les cases");
+    return;
+  }
+
+  let gain = resultat === "Gagné" ? mise * (cote - 1) : -mise;
+
+  paris.push({
+    date,
+    match,
+    mise,
+    cote,
+    resultat,
+    gain
+  });
+
+  await saveCloud();
+
+  document.getElementById("match").value = "";
+  document.getElementById("mise").value = "";
+  document.getElementById("cote").value = "";
+
+  afficher();
 }
 
 window.supprimerPari = async function(i){
- if(confirm("Supprimer ce pari ?")){
-  paris.splice(i,1);
-  await saveCloud();
-  afficher();
- }
+  if(confirm("Supprimer ce pari ?")){
+    paris.splice(i, 1);
+    await saveCloud();
+    afficher();
+  }
 }
 
 function afficher(){
- let table=document.getElementById("table");table.innerHTML="";
- let profit=0,totalMise=0,wins=0,losses=0,gains=[];
- paris.forEach((p,i)=>{
-  profit+=p.gain;totalMise+=p.mise;gains.push(p.gain);
-  p.resultat==="Gagné"?wins++:losses++;
-  table.innerHTML+=`<tr class="${p.gain>=0?'win':'lose'}">
-  <td>${p.date}</td><td>${p.match}</td><td>${euro(p.mise)}</td><td>${p.cote}</td>
-  <td><span class="badge ${p.resultat==='Gagné'?'badge-win':'badge-lose'}">${p.resultat}</span></td>
-  <td><b>${euro(p.gain)}</b></td>
-  <td><span class="delete" onclick="supprimerPari(${i})">X</span></td></tr>`;
- });
- let total=wins+losses,success=total?(wins/total)*100:0,roi=totalMise?(profit/totalMise)*100:0;
- document.getElementById("profit").innerText=euro(profit);
- document.getElementById("profit").className=profit>=0?"good":"bad";
- document.getElementById("totalMise").innerText=euro(totalMise);
- document.getElementById("wins").innerText=wins;
- document.getElementById("losses").innerText=losses;
- document.getElementById("roi").innerText=roi.toFixed(1)+"%";
- document.getElementById("roi").className=roi>=0?"good":"bad";
- document.getElementById("success").innerText=success.toFixed(1)+"%";
- document.getElementById("bigWin").innerText=euro(gains.length?Math.max(...gains):0);
- document.getElementById("bigLoss").innerText=euro(gains.length?Math.min(...gains):0);
- document.getElementById("average").innerText=euro(total?profit/total:0);
- document.getElementById("winRateBar").style.width=success+"%";
- document.getElementById("winRateBar").innerText=success.toFixed(1)+"%";
-}
+  let table = document.getElementById("table");
+  table.innerHTML = "";
 
-let deck=[],player=[],dealer=[],currentBet=0,playing=false,canDouble=false,canSplit=false,splitMode=false,splitHands=[],activeHand=0,splitBets=[];
+  let profit = 0;
+  let totalMise = 0;
+  let wins = 0;
+  let losses = 0;
+  let gains = [];
 
-async function saveBJ(){await saveCloud()}
+  paris.forEach((p, i)=>{
+    profit += p.gain;
+    totalMise += p.mise;
+    gains.push(p.gain);
 
-function updateBJDisplay(){
- document.getElementById("bjBalance").innerText=euro(bj.balance);
- document.getElementById("bjWins").innerText=bj.wins;
- document.getElementById("bjLosses").innerText=bj.losses;
- document.getElementById("bjPushes").innerText=bj.pushes;
- let profit=bj.balance-bj.start;
- document.getElementById("bjProfit").innerText=euro(profit);
- document.getElementById("bjProfit").className=profit>=0?"good":"bad";
- let rank="Bronze";
- if(bj.balance>=7000)rank="Argent";
- if(bj.balance>=10000)rank="Or";
- if(bj.balance>=15000)rank="Diamant";
- if(bj.balance>=25000)rank="GOAT";
- document.getElementById("bjRank").innerText=rank;
-}
+    if(p.resultat === "Gagné"){
+      wins++;
+    }else{
+      losses++;
+    }
 
-function newDeck(){
- let suits=["♠","♥","♦","♣"],vals=["A","2","3","4","5","6","7","8","9","10","J","Q","K"];deck=[];
- for(let d=0;d<6;d++){for(let s of suits){for(let v of vals){deck.push({v,s})}}}
- deck.sort(()=>Math.random()-0.5);
-}
+    table.innerHTML += `
+      <tr class="${p.gain >= 0 ? 'win' : 'lose'}">
+        <td>${p.date}</td>
+        <td>${p.match}</td>
+        <td>${euro(p.mise)}</td>
+        <td>${p.cote}</td>
+        <td>
+          <span class="badge ${p.resultat === 'Gagné' ? 'badge-win' : 'badge-lose'}">
+            ${p.resultat}
+          </span>
+        </td>
+        <td><b>${euro(p.gain)}</b></td>
+        <td><span class="delete" onclick="supprimerPari(${i})">X</span></td>
+      </tr>
+    `;
+  });
 
-function value(hand){
- let sum=0,aces=0;
- hand.forEach(c=>{
-  if(c.v==="A"){sum+=11;aces++}
-  else if(["J","Q","K"].includes(c.v))sum+=10;
-  else sum+=Number(c.v);
- });
- while(sum>21&&aces>0){sum-=10;aces--}
- return sum;
-}
+  let total = wins + losses;
+  let success = total ? (wins / total) * 100 : 0;
+  let roi = totalMise ? (profit / totalMise) * 100 : 0;
 
-function isBJ(hand){return hand.length===2&&value(hand)===21}
-function cardHTML(c,hide=false){return hide?`<div class="playing-card card-back">BlackGasp</div>`:`<div class="playing-card">${c.v}${c.s}</div>`}
+  document.getElementById("profit").innerText = euro(profit);
+  document.getElementById("profit").className = profit >= 0 ? "good" : "bad";
 
-function render(hideDealer=true){
- updateBJDisplay();
- let handToShow=splitMode?splitHands[activeHand]:player;
- document.getElementById("playerCards").innerHTML=handToShow.map(c=>cardHTML(c)).join("");
- document.getElementById("dealerCards").innerHTML=dealer.map((c,i)=>cardHTML(c,hideDealer&&i===1&&playing)).join("");
- document.getElementById("playerScore").innerText=handToShow.length?value(handToShow):"";
- document.getElementById("dealerScore").innerText=dealer.length?(hideDealer&&playing?value([dealer[0]]):value(dealer)):"";
- document.getElementById("hitBtn").disabled=!playing;
- document.getElementById("standBtn").disabled=!playing;
- document.getElementById("doubleBtn").disabled=!playing||!canDouble||bj.balance<currentBet;
- document.getElementById("splitBtn").disabled=!playing||!canSplit||bj.balance<currentBet;
-}
+  document.getElementById("totalMise").innerText = euro(totalMise);
+  document.getElementById("wins").innerText = wins;
+  document.getElementById("losses").innerText = losses;
 
-window.startBlackjack = async function(){
- currentBet=Number(document.getElementById("bjBet").value);
- if(!currentBet||currentBet<=0){alert("Mets une mise");return}
- if(currentBet>bj.balance){alert("Pas assez de balance");return}
- bj.balance-=currentBet;
- newDeck();
- player=[deck.pop(),deck.pop()];
- dealer=[deck.pop(),deck.pop()];
- playing=true;canDouble=true;splitMode=false;splitHands=[];activeHand=0;splitBets=[];
- canSplit=player[0].v===player[1].v && bj.balance>=currentBet;
- document.getElementById("bjMessage").innerText="À toi de jouer";
- if(isBJ(player)){
-  playing=false;
-  bj.balance+=currentBet*2.5;
-  bj.wins++;
-  document.getElementById("bjMessage").innerText="BLACKJACK BLACKGASP 🔥 +x2.5";
- }
- render(!isBJ(player));
- await saveBJ();
-}
+  document.getElementById("roi").innerText = roi.toFixed(1) + "%";
+  document.getElementById("roi").className = roi >= 0 ? "good" : "bad";
 
-window.hit = async function(){
- if(!playing)return;
- canDouble=false;canSplit=false;
- let hand=splitMode?splitHands[activeHand]:player;
- hand.push(deck.pop());
- if(value(hand)>21){
-  if(splitMode && activeHand===0){
-   activeHand=1;
-   document.getElementById("bjMessage").innerText="Main 1 perdue, main 2 à toi";
-   render(true);
-  }else{
-   await window.stand();
-  }
- }else render(true);
- await saveBJ();
-}
+  document.getElementById("success").innerText = success.toFixed(1) + "%";
+  document.getElementById("bigWin").innerText = euro(gains.length ? Math.max(...gains) : 0);
+  document.getElementById("bigLoss").innerText = euro(gains.length ? Math.min(...gains) : 0);
+  document.getElementById("average").innerText = euro(total ? profit / total : 0);
 
-window.stand = async function(){
- if(!playing)return;
- canDouble=false;canSplit=false;
- if(splitMode && activeHand===0){
-  activeHand=1;
-  document.getElementById("bjMessage").innerText="Main 2 à toi";
-  render(true);
-  await saveBJ();
-  return;
- }
- while(value(dealer)<17){dealer.push(deck.pop())}
- finishRound();
- await saveBJ();
-}
-
-function finishRound(){
- playing=false;
- if(splitMode){
-  for(let i=0;i<2;i++){
-   let ps=value(splitHands[i]),ds=value(dealer),bet=splitBets[i];
-   if(ps>21){bj.losses++}
-   else if(ds>21||ps>ds){bj.balance+=bet*2;bj.wins++}
-   else if(ps===ds){bj.balance+=bet;bj.pushes++}
-   else{bj.losses++}
-  }
-  document.getElementById("bjMessage").innerText="Split terminé ✂️";
-  render(false);
-  return;
- }
-
- let ps=value(player),ds=value(dealer);
- if(ps>21){bj.losses++;document.getElementById("bjMessage").innerText="Perdu 💀"}
- else if(ds>21||ps>ds){bj.balance+=currentBet*2;bj.wins++;document.getElementById("bjMessage").innerText="Gagné 🔥"}
- else if(ps===ds){bj.balance+=currentBet;bj.pushes++;document.getElementById("bjMessage").innerText="Égalité 🤝"}
- else{bj.losses++;document.getElementById("bjMessage").innerText="Perdu 💀"}
- render(false);
-}
-
-window.doubleDown = async function(){
- if(!playing||!canDouble||bj.balance<currentBet)return;
- bj.balance-=currentBet;
- currentBet*=2;
- canDouble=false;canSplit=false;
- let hand=splitMode?splitHands[activeHand]:player;
- hand.push(deck.pop());
- if(value(hand)>21){
-  if(splitMode && activeHand===0){activeHand=1;render(true)}
-  else finishRound();
- }else await window.stand();
- await saveBJ();
-}
-
-window.splitHand = async function(){
- if(!playing||!canSplit||bj.balance<currentBet)return;
- bj.balance-=currentBet;
- splitMode=true;
- splitHands=[[player[0],deck.pop()],[player[1],deck.pop()]];
- splitBets=[currentBet,currentBet];
- activeHand=0;
- canSplit=false;
- canDouble=false;
- document.getElementById("bjMessage").innerText="Split activé ✂️ Main 1";
- render(true);
- await saveBJ();
-}
-
-window.resetBJ = async function(){
- if(confirm("Reset la balance Blackjack ?")){
-  bj={balance:5000,start:5000,wins:0,losses:0,pushes:0};
-  player=[];dealer=[];playing=false;splitMode=false;
-  document.getElementById("bjMessage").innerText="Mise et lance une partie";
-  render(false);
-  await saveBJ();
- }
+  document.getElementById("winRateBar").style.width = success + "%";
+  document.getElementById("winRateBar").innerText = success.toFixed(1) + "%";
 }
 
 afficher();
-render(false);
 </script>
 </body>
 </html>
