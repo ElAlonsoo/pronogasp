@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coupe du monde 2K26 X Gaspard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#020b1f,#061a40,#0b2a66);color:white}
@@ -14,8 +15,10 @@ h1{color:#00ff66;margin:10px 0;font-size:42px;text-shadow:0 0 12px #00ff66,0 0 2
 .card,.box{background:rgba(255,255,255,.09);border:1px solid rgba(0,255,102,.45);border-radius:18px;padding:16px;text-align:center;margin-bottom:18px}
 .card b{display:block;color:#ffd700;font-size:24px;margin-top:6px}
 .good{color:#23e36f!important}.bad{color:#ff4d4d!important}
-input,select,button{width:100%;padding:13px;margin:6px 0;border:none;border-radius:12px;font-size:16px}
+input,select,button,textarea{width:100%;padding:13px;margin:6px 0;border:none;border-radius:12px;font-size:16px}
+textarea{min-height:70px}
 button{background:#ffd700;color:#061a40;font-weight:bold;cursor:pointer}
+button:hover{transform:scale(1.01)}
 table{width:100%;border-collapse:collapse;background:white;color:#111;border-radius:16px;overflow:hidden}
 th{background:#ffd700;padding:11px}
 td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
@@ -27,14 +30,20 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 .bar-inner{height:100%;width:0%;background:#23e36f;color:#061a40;font-weight:bold;line-height:24px}
 .footer{text-align:center;opacity:.8;padding:22px}
 .auth{border:2px solid #ffd700}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.pick-card{background:rgba(0,0,0,.25);border:1px solid #ffd700;border-radius:16px;padding:14px;margin:10px 0;text-align:left}
+.pick-card b{color:#ffd700}
+.trophies span{display:inline-block;margin:5px;padding:8px 10px;border-radius:999px;background:rgba(255,215,0,.18);border:1px solid #ffd700}
+.small{opacity:.85;font-size:14px}
+canvas{background:white;border-radius:16px;padding:10px}
 </style>
 </head>
 
 <body>
 <header>
-  <div style="font-size:55px">👁️ 💸 🏆 ⚽ 🐐</div>
+  <div style="font-size:55px">🌍 💸 🏆 ⚽ 🐐</div>
   <h1>Coupe du monde 2K26 X Gaspard</h1>
-  <p>Pronostics Coupe du Monde 2026</p>
+  <p>Paris sportifs, classement, pronos du jour et stats Coupe du Monde</p>
 </header>
 
 <div class="container">
@@ -51,10 +60,17 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 
 <div id="app" style="display:none">
 
-<div class="box">
-  <h2>👤 Mon profil</h2>
-  <input id="pseudo" placeholder="Ton pseudo ex: Gaspard">
-  <button onclick="savePseudo()">Enregistrer mon pseudo</button>
+<div class="grid2">
+  <div class="box">
+    <h2>👤 Mon profil</h2>
+    <input id="pseudo" placeholder="Ton pseudo ex: Gaspard">
+    <button onclick="savePseudo()">Enregistrer mon pseudo</button>
+  </div>
+
+  <div class="box">
+    <h2>🏅 Mes trophées</h2>
+    <div class="trophies" id="myTrophies">Aucun trophée pour l’instant</div>
+  </div>
 </div>
 
 <div class="stats">
@@ -67,11 +83,34 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
   <div class="card">🏆 Plus gros gain<b id="bigWin">0 €</b></div>
   <div class="card">💀 Plus grosse perte<b id="bigLoss">0 €</b></div>
   <div class="card">📊 Moyenne / pari<b id="average">0 €</b></div>
+  <div class="card">🔥 Série actuelle<b id="currentStreak">0</b></div>
 </div>
 
 <div class="box">
   <b>🔥 Taux de réussite</b>
   <div class="bar"><div class="bar-inner" id="winRateBar">0%</div></div>
+</div>
+
+<div class="grid2">
+  <div class="box">
+    <h2>🔥 Pronostic du jour partagé</h2>
+    <select id="dailyMatch"></select>
+    <input id="dailyPrediction" placeholder="Pronostic ex: France gagne">
+    <select id="dailyConfidence">
+      <option value="1">⭐</option>
+      <option value="2">⭐⭐</option>
+      <option value="3">⭐⭐⭐</option>
+      <option value="4">⭐⭐⭐⭐</option>
+      <option value="5" selected>⭐⭐⭐⭐⭐</option>
+    </select>
+    <textarea id="dailyNote" placeholder="Analyse rapide du match"></textarea>
+    <button onclick="publishDailyPick()">Publier mon prono du jour</button>
+  </div>
+
+  <div class="box">
+    <h2>👀 Pronos des potes</h2>
+    <div id="dailyPicksList">Aucun prono publié</div>
+  </div>
 </div>
 
 <div class="box">
@@ -84,6 +123,7 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
         <th>Profit</th>
         <th>ROI</th>
         <th>Réussite</th>
+        <th>Trophées</th>
       </tr>
     </thead>
     <tbody id="leaderboard"></tbody>
@@ -91,15 +131,41 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 </div>
 
 <div class="box">
+  <h2>📈 Courbe de profit</h2>
+  <canvas id="profitChart" height="120"></canvas>
+</div>
+
+<div class="box">
+  <h2>➕ Ajouter un pari Coupe du Monde</h2>
   <input id="date" type="date">
-  <input id="match" placeholder="Match ex: France - Brésil">
+  <select id="match"></select>
   <input id="mise" type="number" placeholder="Mise en €">
   <input id="cote" type="number" step="0.01" placeholder="Cote">
+  <select id="confidence">
+    <option value="1">Confiance ⭐</option>
+    <option value="2">Confiance ⭐⭐</option>
+    <option value="3" selected>Confiance ⭐⭐⭐</option>
+    <option value="4">Confiance ⭐⭐⭐⭐</option>
+    <option value="5">Confiance ⭐⭐⭐⭐⭐</option>
+  </select>
   <select id="resultat">
     <option value="Gagné">Gagné</option>
     <option value="Perdu">Perdu</option>
   </select>
   <button onclick="ajouterPari()">➕ Ajouter le pari</button>
+  <p class="small">Tu choisis le match dans la liste au lieu de l’écrire à la main.</p>
+</div>
+
+<div class="grid2">
+  <div class="box">
+    <h2>⭐ Stats par confiance</h2>
+    <div id="confidenceStats">Aucun pari</div>
+  </div>
+
+  <div class="box">
+    <h2>🏅 Top meilleurs / pires paris</h2>
+    <div id="topBets">Aucun pari</div>
+  </div>
 </div>
 
 <div style="overflow-x:auto">
@@ -110,6 +176,7 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
   <th>Match</th>
   <th>Mise</th>
   <th>Cote</th>
+  <th>Confiance</th>
   <th>Résultat</th>
   <th>Gain/Perte</th>
   <th>Supprimer</th>
@@ -143,11 +210,54 @@ const appFirebase = initializeApp(firebaseConfig);
 const auth = getAuth(appFirebase);
 const db = getFirestore(appFirebase);
 
+const worldCupMatches = [
+"🇲🇽 Mexico - South Africa 🇿🇦",
+"🇰🇷 South Korea - Czechia 🇨🇿",
+"🇨🇦 Canada - Bosnia 🇧🇦",
+"🇺🇸 United States - Paraguay 🇵🇾",
+"🇧🇷 Brazil - Morocco 🇲🇦",
+"🇭🇹 Haiti - Scotland 🏴",
+"🇩🇪 Germany - Curacao 🇨🇼",
+"🇳🇱 Netherlands - Japan 🇯🇵",
+"🇪🇸 Spain - Cape Verde 🇨🇻",
+"🇧🇪 Belgium - Egypt 🇪🇬",
+"🇸🇦 Saudi Arabia - Uruguay 🇺🇾",
+"🇮🇷 Iran - New Zealand 🇳🇿",
+"🇫🇷 France - Senegal 🇸🇳",
+"🇮🇶 Iraq - Norway 🇳🇴",
+"🇦🇷 Argentina - Algeria 🇩🇿",
+"🇵🇹 Portugal - DR Congo 🇨🇩",
+"🏴 England - Croatia 🇭🇷",
+"🇬🇭 Ghana - Panama 🇵🇦",
+"🇺🇿 Uzbekistan - Colombia 🇨🇴",
+"🇫🇷 France - Iraq 🇮🇶",
+"🇳🇴 Norway - Senegal 🇸🇳",
+"🇺🇾 Uruguay - Spain 🇪🇸",
+"🇧🇪 Belgium - Iran 🇮🇷",
+"🇦🇷 Argentina - Austria 🇦🇹",
+"🇨🇴 Colombia - Portugal 🇵🇹",
+"🏴 England - Ghana 🇬🇭",
+"🇧🇷 Brazil - Scotland 🏴"
+];
+
 let currentUser = null;
 let unsubscribeUser = null;
 let unsubscribeLeaderboard = null;
+let unsubscribeDailyPicks = null;
 let paris = [];
 let pseudo = "";
+let profitChart = null;
+
+function fillMatchSelects(){
+  const matchSelect = document.getElementById("match");
+  const dailySelect = document.getElementById("dailyMatch");
+  matchSelect.innerHTML = "";
+  dailySelect.innerHTML = "";
+  worldCupMatches.forEach(m=>{
+    matchSelect.innerHTML += `<option value="${m}">${m}</option>`;
+    dailySelect.innerHTML += `<option value="${m}">${m}</option>`;
+  });
+}
 
 function euro(n){
   return Number(n || 0).toFixed(2) + " €";
@@ -161,27 +271,44 @@ function leaderboardDoc(){
   return doc(db, "leaderboard", currentUser.uid);
 }
 
+function trophiesFromStats(s){
+  let t = [];
+  if(s.wins >= 1) t.push("🎯 Premier win");
+  if(s.currentStreak >= 3) t.push("🔥 Série x3");
+  if(s.currentStreak >= 5) t.push("🚀 Série x5");
+  if(s.roi >= 20 && s.total >= 3) t.push("💎 ROI 20%+");
+  if(s.success >= 70 && s.total >= 5) t.push("🐐 70%+ réussite");
+  if(s.profit >= 100) t.push("💰 +100€");
+  if(!t.length) t.push("Débutant");
+  return t;
+}
+
 function calculStats(){
   let profit = 0;
   let totalMise = 0;
   let wins = 0;
   let losses = 0;
   let gains = [];
+  let currentStreak = 0;
 
   paris.forEach(p=>{
     profit += Number(p.gain || 0);
     totalMise += Number(p.mise || 0);
     gains.push(Number(p.gain || 0));
-
     if(p.resultat === "Gagné") wins++;
     else losses++;
   });
+
+  for(let i=paris.length-1;i>=0;i--){
+    if(paris[i].resultat === "Gagné") currentStreak++;
+    else break;
+  }
 
   let total = wins + losses;
   let success = total ? (wins / total) * 100 : 0;
   let roi = totalMise ? (profit / totalMise) * 100 : 0;
 
-  return {profit,totalMise,wins,losses,total,success,roi,gains};
+  return {profit,totalMise,wins,losses,total,success,roi,gains,currentStreak};
 }
 
 async function saveCloud(){
@@ -193,6 +320,7 @@ async function saveCloud(){
   }, { merge:true });
 
   let s = calculStats();
+  let trophies = trophiesFromStats(s);
 
   await setDoc(leaderboardDoc(), {
     email: currentUser.email,
@@ -202,7 +330,8 @@ async function saveCloud(){
     wins: s.wins,
     losses: s.losses,
     roi: s.roi,
-    success: s.success
+    success: s.success,
+    trophies
   }, { merge:true });
 }
 
@@ -244,11 +373,39 @@ window.savePseudo = async function(){
   alert("Pseudo enregistré !");
 }
 
+window.publishDailyPick = async function(){
+  if(!currentUser) return;
+
+  const match = document.getElementById("dailyMatch").value;
+  const prediction = document.getElementById("dailyPrediction").value.trim();
+  const confidence = Number(document.getElementById("dailyConfidence").value);
+  const note = document.getElementById("dailyNote").value.trim();
+
+  if(!prediction){
+    alert("Mets ton pronostic");
+    return;
+  }
+
+  await setDoc(doc(db, "dailyPicks", currentUser.uid), {
+    uid: currentUser.uid,
+    pseudo: pseudo || currentUser.email.split("@")[0],
+    match,
+    prediction,
+    confidence,
+    note,
+    updatedAt: new Date().toISOString()
+  }, { merge:true });
+
+  document.getElementById("dailyPrediction").value = "";
+  document.getElementById("dailyNote").value = "";
+}
+
 onAuthStateChanged(auth, async (user)=>{
   currentUser = user;
 
   if(unsubscribeUser) unsubscribeUser();
   if(unsubscribeLeaderboard) unsubscribeLeaderboard();
+  if(unsubscribeDailyPicks) unsubscribeDailyPicks();
 
   if(!user){
     document.getElementById("authStatus").innerText = "Pas connecté";
@@ -292,7 +449,6 @@ onAuthStateChanged(auth, async (user)=>{
 
     joueurs.forEach((j,i)=>{
       let medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1;
-
       html += `
         <tr>
           <td>${medal}</td>
@@ -300,11 +456,33 @@ onAuthStateChanged(auth, async (user)=>{
           <td><b>${euro(j.profit)}</b></td>
           <td>${Number(j.roi || 0).toFixed(1)}%</td>
           <td>${Number(j.success || 0).toFixed(1)}%</td>
+          <td>${(j.trophies || []).join(" ")}</td>
         </tr>
       `;
     });
 
     document.getElementById("leaderboard").innerHTML = html;
+  });
+
+  unsubscribeDailyPicks = onSnapshot(collection(db, "dailyPicks"), (snap)=>{
+    let picks = [];
+    snap.forEach(docSnap=>picks.push(docSnap.data()));
+    picks.sort((a,b)=>(b.updatedAt || "").localeCompare(a.updatedAt || ""));
+
+    let html = "";
+    picks.forEach(p=>{
+      html += `
+        <div class="pick-card">
+          <b>${p.pseudo}</b><br>
+          ⚽ ${p.match}<br>
+          🎯 ${p.prediction}<br>
+          ${"⭐".repeat(Number(p.confidence || 1))}<br>
+          <span class="small">${p.note || ""}</span>
+        </div>
+      `;
+    });
+
+    document.getElementById("dailyPicksList").innerHTML = html || "Aucun prono publié";
   });
 });
 
@@ -313,6 +491,7 @@ window.ajouterPari = async function(){
   let match = document.getElementById("match").value;
   let mise = Number(document.getElementById("mise").value);
   let cote = Number(document.getElementById("cote").value);
+  let confidence = Number(document.getElementById("confidence").value);
   let resultat = document.getElementById("resultat").value;
 
   if(!date || !match || !mise || !cote){
@@ -327,13 +506,13 @@ window.ajouterPari = async function(){
     match,
     mise,
     cote,
+    confidence,
     resultat,
     gain
   });
 
   await saveCloud();
 
-  document.getElementById("match").value = "";
   document.getElementById("mise").value = "";
   document.getElementById("cote").value = "";
 
@@ -346,6 +525,64 @@ window.supprimerPari = async function(i){
     await saveCloud();
     afficher();
   }
+}
+
+function updateProfitChart(){
+  let labels = [];
+  let data = [];
+  let running = 0;
+
+  paris.forEach((p,i)=>{
+    running += Number(p.gain || 0);
+    labels.push(p.date || ("Pari " + (i+1)));
+    data.push(running);
+  });
+
+  const ctx = document.getElementById("profitChart");
+
+  if(profitChart) profitChart.destroy();
+
+  profitChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Profit cumulé",
+        data,
+        borderWidth: 3,
+        tension: .25
+      }]
+    }
+  });
+}
+
+function updateConfidenceStats(){
+  let html = "";
+  for(let star=1; star<=5; star++){
+    let list = paris.filter(p=>Number(p.confidence || 3) === star);
+    let wins = list.filter(p=>p.resultat === "Gagné").length;
+    let rate = list.length ? (wins/list.length)*100 : 0;
+    html += `<p>${"⭐".repeat(star)} : ${list.length} pari(s), ${rate.toFixed(1)}% réussite</p>`;
+  }
+  document.getElementById("confidenceStats").innerHTML = html;
+}
+
+function updateTopBets(){
+  if(!paris.length){
+    document.getElementById("topBets").innerHTML = "Aucun pari";
+    return;
+  }
+
+  let sorted = [...paris].sort((a,b)=>Number(b.gain || 0)-Number(a.gain || 0));
+  let best = sorted.slice(0,3);
+  let worst = sorted.slice(-3).reverse();
+
+  let html = "<b>🏆 Meilleurs</b>";
+  best.forEach(p=>html += `<p>${p.match} : ${euro(p.gain)}</p>`);
+  html += "<b>💀 Pires</b>";
+  worst.forEach(p=>html += `<p>${p.match} : ${euro(p.gain)}</p>`);
+
+  document.getElementById("topBets").innerHTML = html;
 }
 
 function afficher(){
@@ -361,6 +598,7 @@ function afficher(){
         <td>${p.match}</td>
         <td>${euro(p.mise)}</td>
         <td>${p.cote}</td>
+        <td>${"⭐".repeat(Number(p.confidence || 3))}</td>
         <td>
           <span class="badge ${p.resultat === 'Gagné' ? 'badge-win' : 'badge-lose'}">
             ${p.resultat}
@@ -374,23 +612,26 @@ function afficher(){
 
   document.getElementById("profit").innerText = euro(s.profit);
   document.getElementById("profit").className = s.profit >= 0 ? "good" : "bad";
-
   document.getElementById("totalMise").innerText = euro(s.totalMise);
   document.getElementById("wins").innerText = s.wins;
   document.getElementById("losses").innerText = s.losses;
-
   document.getElementById("roi").innerText = s.roi.toFixed(1) + "%";
   document.getElementById("roi").className = s.roi >= 0 ? "good" : "bad";
-
   document.getElementById("success").innerText = s.success.toFixed(1) + "%";
   document.getElementById("bigWin").innerText = euro(s.gains.length ? Math.max(...s.gains) : 0);
   document.getElementById("bigLoss").innerText = euro(s.gains.length ? Math.min(...s.gains) : 0);
   document.getElementById("average").innerText = euro(s.total ? s.profit / s.total : 0);
-
+  document.getElementById("currentStreak").innerText = s.currentStreak;
   document.getElementById("winRateBar").style.width = s.success + "%";
   document.getElementById("winRateBar").innerText = s.success.toFixed(1) + "%";
+  document.getElementById("myTrophies").innerHTML = trophiesFromStats(s).map(t=>`<span>${t}</span>`).join("");
+
+  updateProfitChart();
+  updateConfidenceStats();
+  updateTopBets();
 }
 
+fillMatchSelects();
 afficher();
 </script>
 </body>
