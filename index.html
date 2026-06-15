@@ -43,7 +43,7 @@ canvas{background:white;border-radius:16px;padding:10px}
 <header>
   <div style="font-size:55px">🌍 💸 🏆 ⚽ 🐐</div>
   <h1>Coupe du monde 2K26 X Gaspard</h1>
-  <p>Paris sportifs, classement, pronos du jour et stats Coupe du Monde</p>
+  <p>Paris Winamax, classement, pronos du jour et stats Coupe du Monde</p>
 </header>
 
 <div class="container">
@@ -93,7 +93,7 @@ canvas{background:white;border-radius:16px;padding:10px}
 
 <div class="grid2">
   <div class="box">
-    <h2>🔥 Pronostic du jour partagé</h2>
+    <h2>🔥 Pronostic du jour fictif</h2>
     <select id="dailyMatch"></select>
     <input id="dailyPrediction" placeholder="Pronostic ex: France gagne">
     <select id="dailyConfidence">
@@ -108,7 +108,7 @@ canvas{background:white;border-radius:16px;padding:10px}
   </div>
 
   <div class="box">
-    <h2>👀 Pronos des potes</h2>
+    <h2>👀 Pronos fictifs des potes</h2>
     <div id="dailyPicksList">Aucun prono publié</div>
   </div>
 </div>
@@ -136,36 +136,22 @@ canvas{background:white;border-radius:16px;padding:10px}
 </div>
 
 <div class="box">
-  <h2>➕ Ajouter un pari Coupe du Monde</h2>
+  <h2>➕ Ajouter un vrai pari Winamax</h2>
   <input id="date" type="date">
   <select id="match"></select>
   <input id="mise" type="number" placeholder="Mise en €">
   <input id="cote" type="number" step="0.01" placeholder="Cote">
-  <select id="confidence">
-    <option value="1">Confiance ⭐</option>
-    <option value="2">Confiance ⭐⭐</option>
-    <option value="3" selected>Confiance ⭐⭐⭐</option>
-    <option value="4">Confiance ⭐⭐⭐⭐</option>
-    <option value="5">Confiance ⭐⭐⭐⭐⭐</option>
-  </select>
   <select id="resultat">
     <option value="Gagné">Gagné</option>
     <option value="Perdu">Perdu</option>
   </select>
   <button onclick="ajouterPari()">➕ Ajouter le pari</button>
-  <p class="small">Tu choisis le match dans la liste au lieu de l’écrire à la main.</p>
+  <p class="small">Ici tu ajoutes seulement tes vrais paris après Winamax. Pas d’étoiles.</p>
 </div>
 
-<div class="grid2">
-  <div class="box">
-    <h2>⭐ Stats par confiance</h2>
-    <div id="confidenceStats">Aucun pari</div>
-  </div>
-
-  <div class="box">
-    <h2>🏅 Top meilleurs / pires paris</h2>
-    <div id="topBets">Aucun pari</div>
-  </div>
+<div class="box">
+  <h2>🏅 Top meilleurs / pires paris</h2>
+  <div id="topBets">Aucun pari</div>
 </div>
 
 <div style="overflow-x:auto">
@@ -176,7 +162,6 @@ canvas{background:white;border-radius:16px;padding:10px}
   <th>Match</th>
   <th>Mise</th>
   <th>Cote</th>
-  <th>Confiance</th>
   <th>Résultat</th>
   <th>Gain/Perte</th>
   <th>Supprimer</th>
@@ -251,8 +236,10 @@ let profitChart = null;
 function fillMatchSelects(){
   const matchSelect = document.getElementById("match");
   const dailySelect = document.getElementById("dailyMatch");
+
   matchSelect.innerHTML = "";
   dailySelect.innerHTML = "";
+
   worldCupMatches.forEach(m=>{
     matchSelect.innerHTML += `<option value="${m}">${m}</option>`;
     dailySelect.innerHTML += `<option value="${m}">${m}</option>`;
@@ -273,13 +260,16 @@ function leaderboardDoc(){
 
 function trophiesFromStats(s){
   let t = [];
+
   if(s.wins >= 1) t.push("🎯 Premier win");
   if(s.currentStreak >= 3) t.push("🔥 Série x3");
   if(s.currentStreak >= 5) t.push("🚀 Série x5");
   if(s.roi >= 20 && s.total >= 3) t.push("💎 ROI 20%+");
   if(s.success >= 70 && s.total >= 5) t.push("🐐 70%+ réussite");
   if(s.profit >= 100) t.push("💰 +100€");
+
   if(!t.length) t.push("Débutant");
+
   return t;
 }
 
@@ -295,11 +285,12 @@ function calculStats(){
     profit += Number(p.gain || 0);
     totalMise += Number(p.mise || 0);
     gains.push(Number(p.gain || 0));
+
     if(p.resultat === "Gagné") wins++;
     else losses++;
   });
 
-  for(let i=paris.length-1;i>=0;i--){
+  for(let i = paris.length - 1; i >= 0; i--){
     if(paris[i].resultat === "Gagné") currentStreak++;
     else break;
   }
@@ -308,7 +299,17 @@ function calculStats(){
   let success = total ? (wins / total) * 100 : 0;
   let roi = totalMise ? (profit / totalMise) * 100 : 0;
 
-  return {profit,totalMise,wins,losses,total,success,roi,gains,currentStreak};
+  return {
+    profit,
+    totalMise,
+    wins,
+    losses,
+    total,
+    success,
+    roi,
+    gains,
+    currentStreak
+  };
 }
 
 async function saveCloud(){
@@ -449,6 +450,7 @@ onAuthStateChanged(auth, async (user)=>{
 
     joueurs.forEach((j,i)=>{
       let medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1;
+
       html += `
         <tr>
           <td>${medal}</td>
@@ -466,10 +468,15 @@ onAuthStateChanged(auth, async (user)=>{
 
   unsubscribeDailyPicks = onSnapshot(collection(db, "dailyPicks"), (snap)=>{
     let picks = [];
-    snap.forEach(docSnap=>picks.push(docSnap.data()));
+
+    snap.forEach(docSnap=>{
+      picks.push(docSnap.data());
+    });
+
     picks.sort((a,b)=>(b.updatedAt || "").localeCompare(a.updatedAt || ""));
 
     let html = "";
+
     picks.forEach(p=>{
       html += `
         <div class="pick-card">
@@ -491,7 +498,6 @@ window.ajouterPari = async function(){
   let match = document.getElementById("match").value;
   let mise = Number(document.getElementById("mise").value);
   let cote = Number(document.getElementById("cote").value);
-  let confidence = Number(document.getElementById("confidence").value);
   let resultat = document.getElementById("resultat").value;
 
   if(!date || !match || !mise || !cote){
@@ -506,7 +512,6 @@ window.ajouterPari = async function(){
     match,
     mise,
     cote,
-    confidence,
     resultat,
     gain
   });
@@ -556,31 +561,25 @@ function updateProfitChart(){
   });
 }
 
-function updateConfidenceStats(){
-  let html = "";
-  for(let star=1; star<=5; star++){
-    let list = paris.filter(p=>Number(p.confidence || 3) === star);
-    let wins = list.filter(p=>p.resultat === "Gagné").length;
-    let rate = list.length ? (wins/list.length)*100 : 0;
-    html += `<p>${"⭐".repeat(star)} : ${list.length} pari(s), ${rate.toFixed(1)}% réussite</p>`;
-  }
-  document.getElementById("confidenceStats").innerHTML = html;
-}
-
 function updateTopBets(){
   if(!paris.length){
     document.getElementById("topBets").innerHTML = "Aucun pari";
     return;
   }
 
-  let sorted = [...paris].sort((a,b)=>Number(b.gain || 0)-Number(a.gain || 0));
+  let sorted = [...paris].sort((a,b)=>Number(b.gain || 0) - Number(a.gain || 0));
   let best = sorted.slice(0,3);
   let worst = sorted.slice(-3).reverse();
 
   let html = "<b>🏆 Meilleurs</b>";
-  best.forEach(p=>html += `<p>${p.match} : ${euro(p.gain)}</p>`);
+  best.forEach(p=>{
+    html += `<p>${p.match} : ${euro(p.gain)}</p>`;
+  });
+
   html += "<b>💀 Pires</b>";
-  worst.forEach(p=>html += `<p>${p.match} : ${euro(p.gain)}</p>`);
+  worst.forEach(p=>{
+    html += `<p>${p.match} : ${euro(p.gain)}</p>`;
+  });
 
   document.getElementById("topBets").innerHTML = html;
 }
@@ -598,7 +597,6 @@ function afficher(){
         <td>${p.match}</td>
         <td>${euro(p.mise)}</td>
         <td>${p.cote}</td>
-        <td>${"⭐".repeat(Number(p.confidence || 3))}</td>
         <td>
           <span class="badge ${p.resultat === 'Gagné' ? 'badge-win' : 'badge-lose'}">
             ${p.resultat}
@@ -612,22 +610,26 @@ function afficher(){
 
   document.getElementById("profit").innerText = euro(s.profit);
   document.getElementById("profit").className = s.profit >= 0 ? "good" : "bad";
+
   document.getElementById("totalMise").innerText = euro(s.totalMise);
   document.getElementById("wins").innerText = s.wins;
   document.getElementById("losses").innerText = s.losses;
+
   document.getElementById("roi").innerText = s.roi.toFixed(1) + "%";
   document.getElementById("roi").className = s.roi >= 0 ? "good" : "bad";
+
   document.getElementById("success").innerText = s.success.toFixed(1) + "%";
   document.getElementById("bigWin").innerText = euro(s.gains.length ? Math.max(...s.gains) : 0);
   document.getElementById("bigLoss").innerText = euro(s.gains.length ? Math.min(...s.gains) : 0);
   document.getElementById("average").innerText = euro(s.total ? s.profit / s.total : 0);
   document.getElementById("currentStreak").innerText = s.currentStreak;
+
   document.getElementById("winRateBar").style.width = s.success + "%";
   document.getElementById("winRateBar").innerText = s.success.toFixed(1) + "%";
+
   document.getElementById("myTrophies").innerHTML = trophiesFromStats(s).map(t=>`<span>${t}</span>`).join("");
 
   updateProfitChart();
-  updateConfidenceStats();
   updateTopBets();
 }
 
