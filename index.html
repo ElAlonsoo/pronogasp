@@ -11,7 +11,7 @@ header{text-align:center;padding:55px 15px;background:linear-gradient(rgba(0,0,0
 h1{color:#00ff66;margin:10px 0;font-size:42px;text-shadow:0 0 12px #00ff66,0 0 25px #00ff66}
 .container{max-width:1150px;margin:auto;padding:18px}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}
-.card,.box{background:rgba(255,255,255,.09);border:1px solid rgba(0,255,102,.45);border-radius:18px;padding:16px;text-align:center}
+.card,.box{background:rgba(255,255,255,.09);border:1px solid rgba(0,255,102,.45);border-radius:18px;padding:16px;text-align:center;margin-bottom:18px}
 .card b{display:block;color:#ffd700;font-size:24px;margin-top:6px}
 .good{color:#23e36f!important}.bad{color:#ff4d4d!important}
 input,select,button{width:100%;padding:13px;margin:6px 0;border:none;border-radius:12px;font-size:16px}
@@ -51,6 +51,12 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 
 <div id="app" style="display:none">
 
+<div class="box">
+  <h2>👤 Mon profil</h2>
+  <input id="pseudo" placeholder="Ton pseudo ex: Gaspard">
+  <button onclick="savePseudo()">Enregistrer mon pseudo</button>
+</div>
+
 <div class="stats">
   <div class="card">💰 Profit total<b id="profit">0 €</b></div>
   <div class="card">💵 Total misé<b id="totalMise">0 €</b></div>
@@ -66,6 +72,22 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 <div class="box">
   <b>🔥 Taux de réussite</b>
   <div class="bar"><div class="bar-inner" id="winRateBar">0%</div></div>
+</div>
+
+<div class="box">
+  <h2>🏆 Classement des pronostiqueurs</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Rang</th>
+        <th>Joueur</th>
+        <th>Profit</th>
+        <th>ROI</th>
+        <th>Réussite</th>
+      </tr>
+    </thead>
+    <tbody id="leaderboard"></tbody>
+  </table>
 </div>
 
 <div class="box">
@@ -105,7 +127,7 @@ td{padding:11px;text-align:center;border-bottom:1px solid #ddd}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCLWj8oCfZ3ZJe1ezS7QilSfpY237MikcQ",
@@ -122,20 +144,66 @@ const auth = getAuth(appFirebase);
 const db = getFirestore(appFirebase);
 
 let currentUser = null;
-let unsubscribe = null;
+let unsubscribeUser = null;
+let unsubscribeLeaderboard = null;
 let paris = [];
+let pseudo = "";
 
 function euro(n){
-  return Number(n).toFixed(2) + " €";
+  return Number(n || 0).toFixed(2) + " €";
 }
 
 function userDoc(){
   return doc(db, "users", currentUser.uid, "data", "main");
 }
 
+function leaderboardDoc(){
+  return doc(db, "leaderboard", currentUser.uid);
+}
+
+function calculStats(){
+  let profit = 0;
+  let totalMise = 0;
+  let wins = 0;
+  let losses = 0;
+  let gains = [];
+
+  paris.forEach(p=>{
+    profit += Number(p.gain || 0);
+    totalMise += Number(p.mise || 0);
+    gains.push(Number(p.gain || 0));
+
+    if(p.resultat === "Gagné") wins++;
+    else losses++;
+  });
+
+  let total = wins + losses;
+  let success = total ? (wins / total) * 100 : 0;
+  let roi = totalMise ? (profit / totalMise) * 100 : 0;
+
+  return {profit,totalMise,wins,losses,total,success,roi,gains};
+}
+
 async function saveCloud(){
   if(!currentUser) return;
-  await setDoc(userDoc(), { paris }, { merge:true });
+
+  await setDoc(userDoc(), {
+    paris,
+    pseudo
+  }, { merge:true });
+
+  let s = calculStats();
+
+  await setDoc(leaderboardDoc(), {
+    email: currentUser.email,
+    pseudo: pseudo || currentUser.email.split("@")[0],
+    profit: s.profit,
+    totalMise: s.totalMise,
+    wins: s.wins,
+    losses: s.losses,
+    roi: s.roi,
+    success: s.success
+  }, { merge:true });
 }
 
 window.signup = async function(){
@@ -164,10 +232,23 @@ window.logout = async function(){
   await signOut(auth);
 }
 
+window.savePseudo = async function(){
+  pseudo = document.getElementById("pseudo").value.trim();
+
+  if(!pseudo){
+    alert("Mets un pseudo");
+    return;
+  }
+
+  await saveCloud();
+  alert("Pseudo enregistré !");
+}
+
 onAuthStateChanged(auth, async (user)=>{
   currentUser = user;
 
-  if(unsubscribe) unsubscribe();
+  if(unsubscribeUser) unsubscribeUser();
+  if(unsubscribeLeaderboard) unsubscribeLeaderboard();
 
   if(!user){
     document.getElementById("authStatus").innerText = "Pas connecté";
@@ -183,15 +264,47 @@ onAuthStateChanged(auth, async (user)=>{
   if(!snap.exists()){
     const oldParis = JSON.parse(localStorage.getItem("paris")) || [];
     paris = oldParis;
+    pseudo = user.email.split("@")[0];
+    document.getElementById("pseudo").value = pseudo;
     await saveCloud();
   }
 
-  unsubscribe = onSnapshot(userDoc(), (docSnap)=>{
+  unsubscribeUser = onSnapshot(userDoc(), (docSnap)=>{
     if(docSnap.exists()){
       const data = docSnap.data();
       paris = data.paris || [];
+      pseudo = data.pseudo || user.email.split("@")[0];
+      document.getElementById("pseudo").value = pseudo;
       afficher();
     }
+  });
+
+  unsubscribeLeaderboard = onSnapshot(collection(db, "leaderboard"), (snap)=>{
+    let joueurs = [];
+
+    snap.forEach(docSnap=>{
+      joueurs.push(docSnap.data());
+    });
+
+    joueurs.sort((a,b)=>Number(b.profit || 0) - Number(a.profit || 0));
+
+    let html = "";
+
+    joueurs.forEach((j,i)=>{
+      let medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1;
+
+      html += `
+        <tr>
+          <td>${medal}</td>
+          <td>${j.pseudo || "Joueur"}</td>
+          <td><b>${euro(j.profit)}</b></td>
+          <td>${Number(j.roi || 0).toFixed(1)}%</td>
+          <td>${Number(j.success || 0).toFixed(1)}%</td>
+        </tr>
+      `;
+    });
+
+    document.getElementById("leaderboard").innerHTML = html;
   });
 });
 
@@ -239,23 +352,9 @@ function afficher(){
   let table = document.getElementById("table");
   table.innerHTML = "";
 
-  let profit = 0;
-  let totalMise = 0;
-  let wins = 0;
-  let losses = 0;
-  let gains = [];
+  let s = calculStats();
 
-  paris.forEach((p, i)=>{
-    profit += p.gain;
-    totalMise += p.mise;
-    gains.push(p.gain);
-
-    if(p.resultat === "Gagné"){
-      wins++;
-    }else{
-      losses++;
-    }
-
+  paris.forEach((p,i)=>{
     table.innerHTML += `
       <tr class="${p.gain >= 0 ? 'win' : 'lose'}">
         <td>${p.date}</td>
@@ -273,27 +372,23 @@ function afficher(){
     `;
   });
 
-  let total = wins + losses;
-  let success = total ? (wins / total) * 100 : 0;
-  let roi = totalMise ? (profit / totalMise) * 100 : 0;
+  document.getElementById("profit").innerText = euro(s.profit);
+  document.getElementById("profit").className = s.profit >= 0 ? "good" : "bad";
 
-  document.getElementById("profit").innerText = euro(profit);
-  document.getElementById("profit").className = profit >= 0 ? "good" : "bad";
+  document.getElementById("totalMise").innerText = euro(s.totalMise);
+  document.getElementById("wins").innerText = s.wins;
+  document.getElementById("losses").innerText = s.losses;
 
-  document.getElementById("totalMise").innerText = euro(totalMise);
-  document.getElementById("wins").innerText = wins;
-  document.getElementById("losses").innerText = losses;
+  document.getElementById("roi").innerText = s.roi.toFixed(1) + "%";
+  document.getElementById("roi").className = s.roi >= 0 ? "good" : "bad";
 
-  document.getElementById("roi").innerText = roi.toFixed(1) + "%";
-  document.getElementById("roi").className = roi >= 0 ? "good" : "bad";
+  document.getElementById("success").innerText = s.success.toFixed(1) + "%";
+  document.getElementById("bigWin").innerText = euro(s.gains.length ? Math.max(...s.gains) : 0);
+  document.getElementById("bigLoss").innerText = euro(s.gains.length ? Math.min(...s.gains) : 0);
+  document.getElementById("average").innerText = euro(s.total ? s.profit / s.total : 0);
 
-  document.getElementById("success").innerText = success.toFixed(1) + "%";
-  document.getElementById("bigWin").innerText = euro(gains.length ? Math.max(...gains) : 0);
-  document.getElementById("bigLoss").innerText = euro(gains.length ? Math.min(...gains) : 0);
-  document.getElementById("average").innerText = euro(total ? profit / total : 0);
-
-  document.getElementById("winRateBar").style.width = success + "%";
-  document.getElementById("winRateBar").innerText = success.toFixed(1) + "%";
+  document.getElementById("winRateBar").style.width = s.success + "%";
+  document.getElementById("winRateBar").innerText = s.success.toFixed(1) + "%";
 }
 
 afficher();
