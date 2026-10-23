@@ -1,0 +1,2030 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Green Flag 🟢 ou Red Flag 🚩 — Le Grand Test (80 Questions)</title>
+  <meta name="description" content="Fais le test ultime des 80 questions Green Flag vs Red Flag ! Découvre ton % exact, tes pires Red Flags et compare-toi avec tes potes ou ton/ta crush." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg-dark: #090b10;
+  --bg-card: rgba(18, 22, 33, 0.88);
+  --bg-card-hover: rgba(26, 32, 48, 0.95);
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --green-main: #10b981;
+  --red-main: #f43f5e;
+  --amber-main: #f59e0b;
+  --purple-main: #8b5cf6;
+  --blue-main: #3b82f6;
+  --radius-xl: 22px;
+  --radius-lg: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-dark);
+  background-image:
+    radial-gradient(circle at 12% 15%, rgba(16, 185, 129, 0.14) 0%, transparent 40%),
+    radial-gradient(circle at 88% 18%, rgba(244, 63, 94, 0.14) 0%, transparent 40%),
+    radial-gradient(circle at 50% 85%, rgba(139, 92, 246, 0.10) 0%, transparent 45%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+  padding-bottom: 80px;
+}
+
+.container { max-width: 920px; margin: 0 auto; padding: 20px 16px; }
+
+.hero-header {
+  text-align: center;
+  padding: 22px 18px 18px;
+  margin-bottom: 18px;
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.08), rgba(18, 22, 33, 0.92), rgba(244, 63, 94, 0.08));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.hero-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #e2e8f0;
+  margin-bottom: 10px;
+}
+
+.hero-title {
+  font-size: clamp(1.65rem, 4vw, 2.55rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  line-height: 1.18;
+}
+.hero-title .green-txt { color: #34d399; text-shadow: 0 0 24px rgba(16, 185, 129, 0.35); }
+.hero-title .red-txt { color: #fb7185; text-shadow: 0 0 24px rgba(244, 63, 94, 0.35); }
+.hero-sub { color: var(--text-muted); font-size: 0.96rem; max-width: 660px; margin: 0 auto 16px; }
+
+.friend-banner {
+  display: none;
+  margin-bottom: 18px;
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.22), rgba(244, 63, 94, 0.18), rgba(16, 185, 129, 0.18));
+  border: 1px solid rgba(167, 139, 250, 0.45);
+  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.2);
+}
+.friend-banner.active { display: block; }
+.friend-banner-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.friend-banner-text h3 { font-size: 1.08rem; font-weight: 800; margin-bottom: 4px; color: #fff; }
+.friend-banner-text p { font-size: 0.88rem; color: #cbd5e1; }
+.friend-banner-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 16px;
+  backdrop-filter: blur(12px);
+}
+.name-input-wrap { display: flex; align-items: center; gap: 8px; flex: 1 1 210px; }
+.name-input-wrap label { font-size: 0.82rem; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+.name-input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  width: 100%;
+  max-width: 200px;
+  outline: none;
+}
+.name-input:focus { border-color: var(--green-main); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+
+.toggle-group {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3px;
+  border-radius: 11px;
+  gap: 3px;
+}
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 7px 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.toggle-btn:hover { color: #fff; }
+.toggle-btn.active { background: rgba(255, 255, 255, 0.14); color: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 9px 14px;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn:hover { background: rgba(255, 255, 255, 0.13); transform: translateY(-1px); }
+.btn-primary {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-color: rgba(52, 211, 153, 0.5);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.28);
+}
+.btn-primary:hover { background: linear-gradient(135deg, #34d399, #10b981); }
+.btn-accent {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  border-color: rgba(167, 139, 250, 0.5);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.28);
+}
+.btn-accent:hover { background: linear-gradient(135deg, #a78bfa, #7c3aed); }
+
+.progress-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+.progress-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 9px; font-size: 0.85rem; font-weight: 700; }
+.progress-stats { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.progress-track { width: 100%; height: 10px; background: rgba(255, 255, 255, 0.07); border-radius: 999px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #10b981, #8b5cf6, #f43f5e); border-radius: 999px; transition: width 0.3s ease; }
+
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-xl);
+  padding: 28px 24px;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.45);
+  margin-bottom: 16px;
+}
+.question-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(139, 92, 246, 0.16);
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  color: #ddd6fe;
+  padding: 6px 13px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.q-number-badge { font-size: 0.82rem; font-weight: 700; color: var(--text-muted); background: rgba(255, 255, 255, 0.05); padding: 5px 11px; border-radius: 999px; }
+.question-text {
+  font-size: clamp(1.22rem, 2.7vw, 1.6rem);
+  font-weight: 800;
+  line-height: 1.35;
+  color: #fff;
+  margin-bottom: 26px;
+  min-height: 3.6em;
+  display: flex;
+  align-items: center;
+}
+
+.answers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 22px; }
+@media (min-width: 640px) { .answers-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.answer-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 18px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 2px solid rgba(255, 255, 255, 0.11);
+  color: #f8fafc;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.answer-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.28); transform: translateY(-2px); }
+.answer-btn .ans-emoji { font-size: 1.55rem; }
+.answer-btn .ans-label { font-size: 1.02rem; font-weight: 800; }
+.answer-btn .ans-sub { font-size: 0.73rem; color: var(--text-muted); font-weight: 600; }
+.answer-btn .key-hint {
+  position: absolute; top: 8px; right: 8px; font-size: 0.68rem; font-weight: 700; color: #94a3b8;
+  background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.12);
+  width: 20px; height: 20px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
+}
+.answer-btn.selected-oui { background: rgba(16, 185, 129, 0.2); border-color: #10b981; box-shadow: 0 0 25px rgba(16, 185, 129, 0.3); }
+.answer-btn.selected-peutetre { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; box-shadow: 0 0 25px rgba(59, 130, 246, 0.3); }
+.answer-btn.selected-unpeu { background: rgba(245, 158, 11, 0.2); border-color: #f59e0b; box-shadow: 0 0 25px rgba(245, 158, 11, 0.3); }
+.answer-btn.selected-non { background: rgba(244, 63, 94, 0.2); border-color: #f43f5e; box-shadow: 0 0 25px rgba(244, 63, 94, 0.3); }
+
+.card-footer-nav { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding-top: 14px; border-top: 1px solid var(--border-subtle); }
+.auto-next-label { display: inline-flex; align-items: center; gap: 7px; font-size: 0.82rem; color: var(--text-muted); cursor: pointer; }
+.auto-next-label input { accent-color: var(--green-main); width: 15px; height: 15px; }
+
+.q-grid-spoiler { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 18px; }
+.q-grid-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; }
+.q-dots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); gap: 5px; }
+.q-dot {
+  height: 28px; border-radius: 7px; border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04); color: var(--text-muted); font-size: 0.73rem; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.q-dot:hover { border-color: rgba(255, 255, 255, 0.35); color: #fff; }
+.q-dot.current { border: 2px solid #fff; color: #fff; background: rgba(255, 255, 255, 0.16); }
+.q-dot.answered { background: rgba(16, 185, 129, 0.22); border-color: rgba(16, 185, 129, 0.55); color: #6ee7b7; }
+
+.list-view-wrap { display: none; }
+.list-view-wrap.active { display: block; }
+.category-filters { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+.cat-filter-btn {
+  background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.11);
+  color: var(--text-muted); padding: 6px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.cat-filter-btn.active, .cat-filter-btn:hover { background: rgba(139, 92, 246, 0.22); border-color: rgba(167, 139, 250, 0.5); color: #fff; }
+
+.list-item-card {
+  background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 14px;
+  padding: 14px 16px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 12px;
+}
+@media (min-width: 720px) { .list-item-card { flex-direction: row; align-items: center; justify-content: space-between; } }
+.list-item-card.answered-row { border-color: rgba(16, 185, 129, 0.3); }
+.list-item-left { flex: 1; padding-right: 10px; }
+.list-item-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 0.75rem; color: var(--text-muted); font-weight: 700; }
+.list-item-text { font-size: 0.96rem; font-weight: 700; color: #f1f5f9; }
+.list-item-actions { display: grid; grid-template-columns: repeat(4, minmax(68px, 1fr)); gap: 6px; flex-shrink: 0; }
+.mini-ans-btn {
+  padding: 8px 10px; border-radius: 9px; border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04); color: #e2e8f0; font-family: inherit; font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+}
+.mini-ans-btn:hover { background: rgba(255, 255, 255, 0.12); }
+.mini-ans-btn.selected-oui { background: rgba(16, 185, 129, 0.25); border-color: #10b981; color: #6ee7b7; }
+.mini-ans-btn.selected-peutetre { background: rgba(59, 130, 246, 0.25); border-color: #3b82f6; color: #93c5fd; }
+.mini-ans-btn.selected-unpeu { background: rgba(245, 158, 11, 0.25); border-color: #f59e0b; color: #fcd34d; }
+.mini-ans-btn.selected-non { background: rgba(244, 63, 94, 0.25); border-color: #f43f5e; color: #fda4af; }
+
+.results-section { display: none; }
+.results-section.active { display: block; }
+.verdict-hero {
+  background: linear-gradient(150deg, rgba(16, 185, 129, 0.12), rgba(18, 22, 33, 0.96), rgba(244, 63, 94, 0.12));
+  border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-xl);
+  padding: 28px 22px; text-align: center; margin-bottom: 20px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+.verdict-tag {
+  display: inline-block; padding: 6px 16px; border-radius: 999px; font-size: 0.82rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16);
+}
+.verdict-title { font-size: clamp(1.55rem, 3.6vw, 2.35rem); font-weight: 800; margin-bottom: 10px; }
+.verdict-desc { color: #cbd5e1; font-size: 0.98rem; max-width: 650px; margin: 0 auto 24px; }
+.split-score-boxes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 580px; margin: 0 auto 18px; }
+.score-pill-box { padding: 18px 14px; border-radius: 18px; text-align: center; }
+.score-pill-box.green-box { background: rgba(16, 185, 129, 0.13); border: 2px solid rgba(16, 185, 129, 0.45); }
+.score-pill-box.red-box { background: rgba(244, 63, 94, 0.13); border: 2px solid rgba(244, 63, 94, 0.45); }
+.score-big-num { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.05; margin-bottom: 4px; }
+.green-box .score-big-num { color: #34d399; }
+.red-box .score-big-num { color: #fb7185; }
+.score-label { font-size: 0.86rem; font-weight: 700; color: #e2e8f0; }
+
+.tug-of-war-bar {
+  max-width: 580px; margin: 0 auto 22px; height: 18px; border-radius: 999px;
+  background: rgba(244, 63, 94, 0.85); overflow: hidden; display: flex; border: 1px solid rgba(255,255,255,0.18);
+}
+.tug-green-fill { height: 100%; background: linear-gradient(90deg, #059669, #10b981, #34d399); transition: width 0.6s ease; }
+
+.share-panel { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.11); border-radius: 16px; padding: 18px; max-width: 680px; margin: 0 auto; }
+.share-panel h4 { font-size: 0.96rem; font-weight: 800; margin-bottom: 6px; }
+.share-panel p { font-size: 0.83rem; color: var(--text-muted); margin-bottom: 14px; }
+.share-buttons-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+
+.duel-card {
+  display: none; background: linear-gradient(145deg, rgba(139, 92, 246, 0.16), rgba(18, 22, 33, 0.95));
+  border: 1px solid rgba(167, 139, 250, 0.4); border-radius: var(--radius-xl); padding: 24px 20px; margin-bottom: 20px;
+}
+.duel-card.active { display: block; }
+.duel-header { text-align: center; margin-bottom: 18px; }
+.duel-vs-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; margin-bottom: 18px; }
+.duel-player-box { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 14px; text-align: center; }
+.duel-vs-badge {
+  font-weight: 900; font-size: 1.1rem; color: #c4b5fd; background: rgba(139, 92, 246, 0.25);
+  width: 42px; height: 42px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
+}
+
+.results-grid-2 { display: grid; grid-template-columns: 1fr; gap: 18px; margin-bottom: 20px; }
+@media (min-width: 740px) { .results-grid-2 { grid-template-columns: repeat(2, 1fr); } }
+.panel-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 20px; }
+.panel-card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+.flag-list-item { padding: 11px 13px; border-radius: 12px; margin-bottom: 9px; font-size: 0.88rem; display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.flag-list-item.red-item { background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.28); }
+.flag-list-item.green-item { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.28); }
+.flag-ans-tag { font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); white-space: nowrap; flex-shrink: 0; }
+
+.cat-bar-row { margin-bottom: 13px; }
+.cat-bar-top { display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 700; margin-bottom: 5px; }
+.cat-bar-track { height: 9px; background: rgba(244, 63, 94, 0.45); border-radius: 999px; overflow: hidden; }
+.cat-bar-fill { height: 100%; background: linear-gradient(90deg, #10b981, #34d399); border-radius: 999px; }
+
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: #10b981; color: #06281e; font-weight: 800; font-size: 0.9rem;
+  padding: 12px 22px; border-radius: 999px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  z-index: 9999; opacity: 0; transition: all 0.28s ease; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero-header">
+      <div class="hero-badges">
+        <span>🇫🇷 Édition Officielle</span>
+        <span>•</span>
+        <span id="headerModeLabel">80 Questions</span>
+        <span>•</span>
+        <span>Couple, Potes & Soirées</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="green-txt">Green Flag 🟢</span> ou <span class="red-txt">Red Flag 🚩</span>
+      </h1>
+      <p class="hero-sub">
+        Es-tu une perle rare ou un danger public ambulant ? Réponds honnêtement par <strong>Oui</strong>, <strong>Peut-être</strong>, <strong>Un peu</strong> ou <strong>Non</strong> et envoie ton lien à tes potes pour comparer vos scores !
+      </p>
+      <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+        <button class="btn" onclick="copyCleanTestLink()">🔗 Copier le lien du test pour un pote</button>
+        <button class="btn btn-accent" onclick="showResultsNow()">📊 Voir mon score maintenant</button>
+      </div>
+    </header>
+
+    <div id="friendBanner" class="friend-banner">
+      <div class="friend-banner-top">
+        <div class="friend-banner-text">
+          <h3 id="friendBannerTitle">🔥 Un pote t'a envoyé son résultat Green / Red Flag !</h3>
+          <p id="friendBannerSub">Découvre ses réponses ou fais le test pour débloquer le duel de compatibilité.</p>
+        </div>
+        <div class="friend-banner-actions">
+          <button class="btn btn-accent" onclick="viewFriendProfileDirectly()">👀 Voir son profil détaillé</button>
+          <button class="btn btn-primary" onclick="startTestAgainstFriend()">⚔️ Passer le test & Comparer</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls-bar">
+      <div class="name-input-wrap">
+        <label for="userNameInput">👤 Ton prénom / pseudo :</label>
+        <input type="text" id="userNameInput" class="name-input" placeholder="Ex: Thomas, Léa..." maxlength="24" oninput="saveUserName()" />
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+        <div class="toggle-group" title="Choisir le nombre de questions">
+          <button id="mode80Btn" class="toggle-btn active" onclick="setQuestionMode('full')">🔥 Complet (80)</button>
+          <button id="mode20Btn" class="toggle-btn" onclick="setQuestionMode('quick')">⚡ Rapide (20)</button>
+        </div>
+
+        <div class="toggle-group" title="Choisir le mode d'affichage">
+          <button id="viewCardBtn" class="toggle-btn active" onclick="setViewMode('card')">🃏 Carte par carte</button>
+          <button id="viewListBtn" class="toggle-btn" onclick="setViewMode('list')">📋 Liste complète</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="quizProgressCard" class="progress-card">
+      <div class="progress-top">
+        <div class="progress-stats">
+          <span id="progressText">Question 1 / 80</span>
+          <span id="answeredCountBadge" class="badge-pill">0 / 80 répondues</span>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn" style="padding:5px 10px; font-size:0.76rem;" onclick="resetAllAnswers()">🔄 Réinitialiser</button>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div id="progressBarFill" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <main id="cardModeSection">
+      <div class="question-card" id="questionCardBox">
+        <div class="question-meta">
+          <span id="qCategoryBadge" class="category-badge">💘 Couple & Jalousie</span>
+          <span id="qNumberBadge" class="q-number-badge">Question #1 sur 80</span>
+        </div>
+
+        <div id="qTextDisplay" class="question-text">
+          Être jaloux(se) dès que ton/ta partenaire parle à quelqu'un d'autre
+        </div>
+
+        <div class="answers-grid">
+          <button class="answer-btn" id="ansBtn_1" onclick="selectAnswer(1)">
+            <span class="key-hint">1</span>
+            <span class="ans-emoji">✅</span>
+            <span class="ans-label">Oui</span>
+            <span class="ans-sub">Carrément / Souvent</span>
+          </button>
+
+          <button class="answer-btn" id="ansBtn_2" onclick="selectAnswer(2)">
+            <span class="key-hint">2</span>
+            <span class="ans-emoji">🤔</span>
+            <span class="ans-label">Peut-être</span>
+            <span class="ans-sub">Ça dépend / Possible</span>
+          </button>
+
+          <button class="answer-btn" id="ansBtn_3" onclick="selectAnswer(3)">
+            <span class="key-hint">3</span>
+            <span class="ans-emoji">🤏</span>
+            <span class="ans-label">Un peu</span>
+            <span class="ans-sub">Rarement / Léger</span>
+          </button>
+
+          <button class="answer-btn" id="ansBtn_4" onclick="selectAnswer(4)">
+            <span class="key-hint">4</span>
+            <span class="ans-emoji">❌</span>
+            <span class="ans-label">Non</span>
+            <span class="ans-sub">Jamais / Pas du tout</span>
+          </button>
+        </div>
+
+        <div class="card-footer-nav">
+          <button class="btn" id="prevQBtn" onclick="prevQuestion()">← Précédent</button>
+
+          <label class="auto-next-label">
+            <input type="checkbox" id="autoNextCheckbox" checked />
+            Passer automatiquement à la suivante
+          </label>
+
+          <div style="display:flex; gap:8px;">
+            <button class="btn" id="nextQBtn" onclick="nextQuestion()">Suivant →</button>
+            <button class="btn btn-primary" onclick="showResultsNow()">Terminer & Voir mon score 🏁</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-grid-spoiler">
+        <div class="q-grid-header">
+          <span>🧭 Navigation rapide (clique sur un numéro pour y aller directement)</span>
+          <span style="font-size:0.75rem;">Raccourcis clavier : touches <strong>1</strong> (Oui), <strong>2</strong> (Peut-être), <strong>3</strong> (Un peu), <strong>4</strong> (Non)</span>
+        </div>
+        <div id="qDotsGrid" class="q-dots-grid"></div>
+      </div>
+    </main>
+
+    <section id="listModeSection" class="list-view-wrap">
+      <div id="categoryFiltersBar" class="category-filters"></div>
+      <div id="questionsListContainer"></div>
+      <div style="text-align:center; margin-top:20px;">
+        <button class="btn btn-primary" style="font-size:1.05rem; padding:14px 28px;" onclick="showResultsNow()">
+          🎉 Calculer mon score Green Flag / Red Flag maintenant
+        </button>
+      </div>
+    </section>
+
+    <section id="resultsSection" class="results-section">
+      <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <button class="btn" onclick="backToQuiz()">← Retourner aux questions</button>
+        <button class="btn" onclick="resetAllAnswers()">🔄 Recommencer le test à zéro</button>
+      </div>
+
+      <div class="verdict-hero">
+        <div id="verdictTag" class="verdict-tag">BILAN OFFICIEL</div>
+        <h2 id="verdictTitle" class="verdict-title">Ton Verdict Green / Red Flag</h2>
+        <p id="verdictDesc" class="verdict-desc"></p>
+
+        <div class="split-score-boxes">
+          <div class="score-pill-box green-box">
+            <div id="greenPctDisplay" class="score-big-num">50%</div>
+            <div class="score-label">🟢 GREEN FLAG</div>
+          </div>
+          <div class="score-pill-box red-box">
+            <div id="redPctDisplay" class="score-big-num">50%</div>
+            <div class="score-label">🚩 RED FLAG</div>
+          </div>
+        </div>
+
+        <div class="tug-of-war-bar">
+          <div id="tugGreenFill" class="tug-green-fill" style="width: 50%;"></div>
+        </div>
+
+        <div class="share-panel">
+          <h4>📲 Envoie ton résultat à un(e) pote ou ton/ta crush pour comparer !</h4>
+          <p>Ton lien contient tes réponses encodées : ton pote pourra voir ton profil ET passer le test pour afficher votre score de compatibilité !</p>
+          <div class="share-buttons-row">
+            <button class="btn btn-primary" onclick="copyShareResultLink()">
+              🔗 Copier le lien de mon résultat (Comparaison Pote)
+            </button>
+            <button class="btn btn-accent" onclick="copyWhatsAppSummary()">
+              💬 Copier mon résumé pour WhatsApp / Insta / Discord
+            </button>
+            <button class="btn" onclick="copyCleanTestLink()">
+              📋 Copier le lien vierge du test
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="duelComparisonCard" class="duel-card">
+        <div class="duel-header">
+          <span class="badge-pill" style="margin-bottom:6px;">⚔️ MODE DUEL & COMPATIBILITÉ</span>
+          <h3 id="duelHeadline" style="font-size:1.35rem; font-weight:800;">Comparaison Côte-à-Côte</h3>
+          <p id="duelSubtext" style="font-size:0.9rem; color:#cbd5e1; margin-top:4px;"></p>
+        </div>
+
+        <div class="duel-vs-grid">
+          <div class="duel-player-box">
+            <div id="duelPlayer1Name" style="font-weight:800; font-size:1rem; margin-bottom:4px;">Toi</div>
+            <div id="duelPlayer1Score" style="font-size:1.45rem; font-weight:800; color:#34d399;">--% 🟢</div>
+            <div id="duelPlayer1Red" style="font-size:0.82rem; color:#fda4af;">--% 🚩 Red Flag</div>
+          </div>
+          <div class="duel-vs-badge">VS</div>
+          <div class="duel-player-box">
+            <div id="duelPlayer2Name" style="font-weight:800; font-size:1rem; margin-bottom:4px;">Ton Pote</div>
+            <div id="duelPlayer2Score" style="font-size:1.45rem; font-weight:800; color:#34d399;">--% 🟢</div>
+            <div id="duelPlayer2Red" style="font-size:0.82rem; color:#fda4af;">--% 🚩 Red Flag</div>
+          </div>
+        </div>
+
+        <div id="duelClashesList" style="margin-top:12px;"></div>
+      </div>
+
+      <div class="panel-card" style="margin-bottom:18px;">
+        <h3>📊 Ton Profil par Catégorie (8 Dimensions)</h3>
+        <div id="categoryBreakdownContainer"></div>
+      </div>
+
+      <div class="results-grid-2">
+        <div class="panel-card">
+          <h3 style="color:#fb7185;">🚩 Tes Plus Gros Red Flags Déclenchés</h3>
+          <div id="topRedFlagsList"></div>
+        </div>
+
+        <div class="panel-card">
+          <h3 style="color:#34d399;">🟢 Tes Plus Beaux Green Flags Validés</h3>
+          <div id="topGreenFlagsList"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toastBox" class="toast">Lien copié dans le presse-papier ! ✅</div>
+
+  <script>
+const QUESTIONS = [
+  {
+    "id": 1,
+    "category": "💘 Couple & Jalousie",
+    "text": "Être jaloux(se) dès que ton/ta partenaire parle à quelqu'un d'autre",
+    "polarity": "red",
+    "weight": 3,
+    "quick": true,
+    "badge": "Jalousie nucléaire"
+  },
+  {
+    "id": 2,
+    "category": "😂 Humour & Égo",
+    "text": "Rire du malheur des autres (quand quelqu'un trébuche, se fait recaler, galère, etc.)",
+    "polarity": "red",
+    "weight": 2,
+    "quick": true,
+    "badge": "Schadenfreude"
+  },
+  {
+    "id": 3,
+    "category": "💘 Couple & Jalousie",
+    "text": "Fouiller en cachette dans le téléphone de son/sa partenaire pendant qu'il/elle est sous la douche",
+    "polarity": "red",
+    "weight": 3,
+    "quick": true,
+    "badge": "Agent du FBI"
+  },
+  {
+    "id": 4,
+    "category": "💘 Couple & Jalousie",
+    "text": "Encourager son/sa partenaire à voir ses potes sans lui faire de crise",
+    "polarity": "green",
+    "weight": 3,
+    "quick": true,
+    "badge": "Confiance saine"
+  },
+  {
+    "id": 5,
+    "category": "💘 Couple & Jalousie",
+    "text": "Parler de son ex dès le premier date pendant 45 minutes",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Deuil non fait"
+  },
+  {
+    "id": 6,
+    "category": "💘 Couple & Jalousie",
+    "text": "Se souvenir des petits détails que l'autre a mentionnés une seule fois (son plat préféré, une date importante)",
+    "polarity": "green",
+    "weight": 2,
+    "quick": true,
+    "badge": "Attentionné(e)"
+  },
+  {
+    "id": 7,
+    "category": "💘 Couple & Jalousie",
+    "text": "Demander à son/sa partenaire de supprimer des personnes de ses réseaux sociaux par pure insécurité",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Contrôle"
+  },
+  {
+    "id": 8,
+    "category": "💘 Couple & Jalousie",
+    "text": "Rassurer l'autre spontanément quand on sent qu'il/elle doute de soi",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Sécurité émotionnelle"
+  },
+  {
+    "id": 9,
+    "category": "💘 Couple & Jalousie",
+    "text": "Faire des crises de jalousie pour un simple 'like' sur Instagram il y a 3 ans",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Archéologue du drama"
+  },
+  {
+    "id": 10,
+    "category": "💘 Couple & Jalousie",
+    "text": "Être sincèrement fier/fière des réussites de son/sa partenaire sans se sentir en compétition",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Team Player"
+  },
+  {
+    "id": 11,
+    "category": "💘 Couple & Jalousie",
+    "text": "Respecter l'espace personnel et les moments de solitude de l'autre sans le prendre personnellement",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Indépendance"
+  },
+  {
+    "id": 12,
+    "category": "😂 Humour & Égo",
+    "text": "Savoir rire de soi-même quand on fait une bourde monumentale",
+    "polarity": "green",
+    "weight": 2,
+    "quick": true,
+    "badge": "Auto-dérision"
+  },
+  {
+    "id": 13,
+    "category": "😂 Humour & Égo",
+    "text": "Lancer des piques méchantes en public et dire « Roh ça va, c'est de l'humour ! » quand l'autre se vexe",
+    "polarity": "red",
+    "weight": 3,
+    "quick": true,
+    "badge": "Passif-agressif"
+  },
+  {
+    "id": 14,
+    "category": "😂 Humour & Égo",
+    "text": "Ramener absolument toutes les conversations à soi (« Moi aussi, mais en pire ! »)",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Centre du monde"
+  },
+  {
+    "id": 15,
+    "category": "😂 Humour & Égo",
+    "text": "Reconnaître facilement quand on ne connaît rien à un sujet au lieu d'inventer",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Humilité"
+  },
+  {
+    "id": 16,
+    "category": "😂 Humour & Égo",
+    "text": "Être incapable d'admettre qu'on a tort, même avec la preuve sous les yeux sur Google",
+    "polarity": "red",
+    "weight": 3,
+    "quick": true,
+    "badge": "Mauvaise foi légendaire"
+  },
+  {
+    "id": 17,
+    "category": "😂 Humour & Égo",
+    "text": "Faire des blagues juste pour mettre à l'aise quelqu'un de timide dans un groupe",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Bienveillance"
+  },
+  {
+    "id": 18,
+    "category": "😂 Humour & Égo",
+    "text": "Bouder ou vouloir arrêter de jouer dès qu'on perd à un jeu de société ou à Mario Kart",
+    "polarity": "red",
+    "weight": 1,
+    "quick": false,
+    "badge": "Mauvais joueur"
+  },
+  {
+    "id": 19,
+    "category": "😂 Humour & Égo",
+    "text": "Complimenter sincèrement les autres sans rien attendre en retour",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Good Vibes"
+  },
+  {
+    "id": 20,
+    "category": "😂 Humour & Égo",
+    "text": "Arrêter immédiatement une blague si on voit qu'elle met quelqu'un mal à l'aise",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Respect"
+  },
+  {
+    "id": 21,
+    "category": "🤝 Amitié & Loyauté",
+    "text": "Défendre un(e) ami(e) quand des gens parlent mal de lui/elle dans son dos",
+    "polarity": "green",
+    "weight": 3,
+    "quick": true,
+    "badge": "Vrai(e) allié(e)"
+  },
+  {
+    "id": 22,
+    "category": "🤝 Amitié & Loyauté",
+    "text": "Raconter un secret qu'on t'a confié en commençant par « Promets-moi de le dire à personne »",
+    "polarity": "red",
+    "weight": 3,
+    "quick": true,
+    "badge": "Radio Commère"
+  },
+  {
+    "id": 23,
+    "category": "🤝 Amitié & Loyauté",
+    "text": "Disparaître complètement de la vie de ses potes dès qu'on se met en couple",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Fantôme amoureux"
+  },
+  {
+    "id": 24,
+    "category": "🤝 Amitié & Loyauté",
+    "text": "Être présent(e) à 3h du matin si un(e) ami(e) a une vraie galère",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Pilier"
+  },
+  {
+    "id": 25,
+    "category": "🤝 Amitié & Loyauté",
+    "text": "Critiquer quelqu'un dès qu'il quitte la pièce alors qu'on lui faisait des grands sourires 2 minutes avant",
+    "polarity": "red",
+    "weight": 3,
+    "quick": true,
+    "badge": "Double face"
+  },
+  {
+    "id": 26,
+    "category": "🤝 Amitié & Loyauté",
+    "text": "Prendre des nouvelles d'un pote qui traverse une période compliquée sans attendre qu'il demande de l'aide",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Cœur en or"
+  },
+  {
+    "id": 27,
+    "category": "🤝 Amitié & Loyauté",
+    "text": "Annuler un plan prévu depuis une semaine à la dernière minute parce qu'on a trouvé 'mieux'",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Lâcheur / Lâcheuse"
+  },
+  {
+    "id": 28,
+    "category": "🤝 Amitié & Loyauté",
+    "text": "Se réjouir sincèrement quand un(e) ami(e) décroche un job, un appart ou réussit sa vie",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Zéro jalousie"
+  },
+  {
+    "id": 29,
+    "category": "🤝 Amitié & Loyauté",
+    "text": "Draguer ou flirter avec l'ex d'un(e) ami(e) proche",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Trahison suprême"
+  },
+  {
+    "id": 30,
+    "category": "🤝 Amitié & Loyauté",
+    "text": "Dire la vérité en face à un(e) ami(e) avec bienveillance quand il/elle fait n'importe quoi",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Honnêteté loyale"
+  },
+  {
+    "id": 31,
+    "category": "📱 Réseaux Sociaux & Textos",
+    "text": "Ghoster quelqu'un du jour au lendemain au lieu d'expliquer honnêtement qu'on n'est plus intéressé(e)",
+    "polarity": "red",
+    "weight": 3,
+    "quick": true,
+    "badge": "Casper le fantôme"
+  },
+  {
+    "id": 32,
+    "category": "📱 Réseaux Sociaux & Textos",
+    "text": "Laisser volontairement quelqu'un en 'Vu' pendant des heures tout en postant des stories",
+    "polarity": "red",
+    "weight": 2,
+    "quick": true,
+    "badge": "Jeu psychologique"
+  },
+  {
+    "id": 33,
+    "category": "📱 Réseaux Sociaux & Textos",
+    "text": "Poser son téléphone écran retourné pendant un repas ou un date pour être 100% présent(e)",
+    "polarity": "green",
+    "weight": 2,
+    "quick": true,
+    "badge": "Présence réelle"
+  },
+  {
+    "id": 34,
+    "category": "📱 Réseaux Sociaux & Textos",
+    "text": "Stalker le profil de son ex (ou de la nouvelle copine / du nouveau copain de son ex) avec un faux compte",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Espionnage 2.0"
+  },
+  {
+    "id": 35,
+    "category": "📱 Réseaux Sociaux & Textos",
+    "text": "Envoyer un petit message « Tu es bien rentré(e) ? » après une soirée",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Attention adorable"
+  },
+  {
+    "id": 36,
+    "category": "📱 Réseaux Sociaux & Textos",
+    "text": "Envoyer des captures d'écran de conversations privées dans un groupe WhatsApp pour se moquer",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Fuite de dossiers"
+  },
+  {
+    "id": 37,
+    "category": "📱 Réseaux Sociaux & Textos",
+    "text": "Prévenir quand on est occupé(e) (« Je suis au boulot, je te réponds ce soir ! ») au lieu de disparaître",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Communication claire"
+  },
+  {
+    "id": 38,
+    "category": "📱 Réseaux Sociaux & Textos",
+    "text": "Poster des citations passives-agressives en story pour viser quelqu'un sans lui parler directement",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Drama Queen/King"
+  },
+  {
+    "id": 39,
+    "category": "📱 Réseaux Sociaux & Textos",
+    "text": "Demander l'accord de ses potes avant de poster une photo où ils apparaissent",
+    "polarity": "green",
+    "weight": 1,
+    "quick": false,
+    "badge": "Respect de l'image"
+  },
+  {
+    "id": 40,
+    "category": "📱 Réseaux Sociaux & Textos",
+    "text": "Ne pas juger la valeur d'une personne ou d'une relation au nombre de likes ou d'abonnés",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Pieds sur terre"
+  },
+  {
+    "id": 41,
+    "category": "💸 Vie Quotidienne & Argent",
+    "text": "Réclamer un virement Lydia / Paylib de 0,80 € pour un café ou un paquet de chewing-gums",
+    "polarity": "red",
+    "weight": 2,
+    "quick": true,
+    "badge": "Pinailleur extrême"
+  },
+  {
+    "id": 42,
+    "category": "💸 Vie Quotidienne & Argent",
+    "text": "Rembourser ses dettes spontanément sans que l'autre ait besoin de relancer 4 fois",
+    "polarity": "green",
+    "weight": 3,
+    "quick": true,
+    "badge": "Fiabilité 100%"
+  },
+  {
+    "id": 43,
+    "category": "💸 Vie Quotidienne & Argent",
+    "text": "Laisser la vaisselle s'empiler dans l'évier en espérant qu'elle se lave toute seule",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Allergie à l'éponge"
+  },
+  {
+    "id": 44,
+    "category": "💸 Vie Quotidienne & Argent",
+    "text": "Partager naturellement les tâches ménagères sans attendre qu'on te fasse une liste",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Adulte fonctionnel"
+  },
+  {
+    "id": 45,
+    "category": "💸 Vie Quotidienne & Argent",
+    "text": "Disparaître mystérieusement aux toilettes pile au moment où le serveur apporte l'addition",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Esquive fiscale"
+  },
+  {
+    "id": 46,
+    "category": "💸 Vie Quotidienne & Argent",
+    "text": "Faire des petits cadeaux ou attentions spontanées juste parce que ça t'a fait penser à la personne",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Générosité"
+  },
+  {
+    "id": 47,
+    "category": "💸 Vie Quotidienne & Argent",
+    "text": "Emprunter les affaires ou vêtements de quelqu'un et les rendre abîmés, sales ou jamais",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Trou noir"
+  },
+  {
+    "id": 48,
+    "category": "💸 Vie Quotidienne & Argent",
+    "text": "Savoir gérer son budget sans faire peser ses dépenses impulsives sur les autres",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Responsable"
+  },
+  {
+    "id": 49,
+    "category": "💸 Vie Quotidienne & Argent",
+    "text": "Se vanter constamment du prix de ses fringues, de sa montre ou de son salaire",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Nouveau riche"
+  },
+  {
+    "id": 50,
+    "category": "💸 Vie Quotidienne & Argent",
+    "text": "Aider à débarrasser et ranger quand on est invité(e) à manger chez des amis",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Invité(e) rêvé(e)"
+  },
+  {
+    "id": 51,
+    "category": "🗣️ Communication & Conflits",
+    "text": "Savoir dire « Pardon, j'ai abusé, tu avais raison » sincèrement après une dispute",
+    "polarity": "green",
+    "weight": 3,
+    "quick": true,
+    "badge": "Maturité émotionnelle"
+  },
+  {
+    "id": 52,
+    "category": "🗣️ Communication & Conflits",
+    "text": "Faire la gueule et répondre « Rien, laisse tomber » en attendant que l'autre devine dans ta tête",
+    "polarity": "red",
+    "weight": 2,
+    "quick": true,
+    "badge": "Télépathie exigée"
+  },
+  {
+    "id": 53,
+    "category": "🗣️ Communication & Conflits",
+    "text": "Retourner la situation pendant une embrouille pour que l'autre finisse par s'excuser alors que tu es en tort",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Gaslighting"
+  },
+  {
+    "id": 54,
+    "category": "🗣️ Communication & Conflits",
+    "text": "Écouter l'autre jusqu'au bout sans lui couper la parole toutes les 10 secondes",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Écoute active"
+  },
+  {
+    "id": 55,
+    "category": "🗣️ Communication & Conflits",
+    "text": "Ressortir des vieux dossiers d'il y a 2 ans au milieu d'une dispute qui n'a rien à voir",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Archives nationales"
+  },
+  {
+    "id": 56,
+    "category": "🗣️ Communication & Conflits",
+    "text": "Parler calmement de ce qui te dérange au lieu de crier ou de claquer les portes",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Maîtrise de soi"
+  },
+  {
+    "id": 57,
+    "category": "🗣️ Communication & Conflits",
+    "text": "Menacer de rompre ou de tout arrêter à la moindre petite contrariété",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Chantage affectif"
+  },
+  {
+    "id": 58,
+    "category": "🗣️ Communication & Conflits",
+    "text": "Chercher une vraie solution ensemble plutôt que de chercher un coupable",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Constructif"
+  },
+  {
+    "id": 59,
+    "category": "🗣️ Communication & Conflits",
+    "text": "Faire le 'silent treatment' (ignorer totalement quelqu'un pendant plusieurs jours pour le punir)",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Punition glaciale"
+  },
+  {
+    "id": 60,
+    "category": "🗣️ Communication & Conflits",
+    "text": "Accepter les excuses de quelqu'un et passer vraiment à autre chose sans rancune",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Pardon sincère"
+  },
+  {
+    "id": 61,
+    "category": "🍻 Sorties & Comportement en public",
+    "text": "Parler mal ou de manière hautaine aux serveurs, caissiers ou livreurs",
+    "polarity": "red",
+    "weight": 3,
+    "quick": true,
+    "badge": "Mépris total"
+  },
+  {
+    "id": 62,
+    "category": "🍻 Sorties & Comportement en public",
+    "text": "Dire systématiquement « Bonjour, s'il vous plaît, merci, bonne journée » aux commerçants",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Politesse royale"
+  },
+  {
+    "id": 63,
+    "category": "🍻 Sorties & Comportement en public",
+    "text": "Arriver systématiquement avec 45 minutes de retard en disant « J'arrive dans 5 minutes » alors que tu es encore en serviette",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Fuseau horaire parallèle"
+  },
+  {
+    "id": 64,
+    "category": "🍻 Sorties & Comportement en public",
+    "text": "Vérifier que tout le monde dans le groupe rentre en sécurité après une soirée",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Ange gardien"
+  },
+  {
+    "id": 65,
+    "category": "🍻 Sorties & Comportement en public",
+    "text": "Regarder des vidéos TikTok ou écouter sa musique à fond sans écouteurs dans les transports en commun",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Nuisance sonore"
+  },
+  {
+    "id": 66,
+    "category": "🍻 Sorties & Comportement en public",
+    "text": "Intégrer naturellement dans la discussion la personne qui est un peu mise de côté en soirée",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Charisme bienveillant"
+  },
+  {
+    "id": 67,
+    "category": "🍻 Sorties & Comportement en public",
+    "text": "Forcer lourdement quelqu'un à boire de l'alcool alors qu'il/elle a dit non",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Pression reloue"
+  },
+  {
+    "id": 68,
+    "category": "🍻 Sorties & Comportement en public",
+    "text": "Tenir la porte ou céder sa place spontanément dans le métro / bus",
+    "polarity": "green",
+    "weight": 1,
+    "quick": false,
+    "badge": "Civisme"
+  },
+  {
+    "id": 69,
+    "category": "🍻 Sorties & Comportement en public",
+    "text": "Jeter son papier ou son mégot par terre quand il n'y a pas de poubelle à moins de 3 mètres",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Zéro respect"
+  },
+  {
+    "id": 70,
+    "category": "🍻 Sorties & Comportement en public",
+    "text": "Savoir s'adapter quand un plan change (pluie, resto complet) sans plomber l'ambiance de tout le groupe",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Good Mood"
+  },
+  {
+    "id": 71,
+    "category": "🌱 Valeurs & Empathie",
+    "text": "Dire que « tous mes ex étaient fous / folles » sans jamais se remettre en question",
+    "polarity": "red",
+    "weight": 3,
+    "quick": true,
+    "badge": "Dénominateur commun"
+  },
+  {
+    "id": 72,
+    "category": "🌱 Valeurs & Empathie",
+    "text": "Être doux/douce et bienveillant(e) avec les animaux",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Ami(e) des bêtes"
+  },
+  {
+    "id": 73,
+    "category": "🌱 Valeurs & Empathie",
+    "text": "Minimiser les émotions des autres avec des « Tu es trop sensible » ou « Tu dramatises pour rien »",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Invalidation"
+  },
+  {
+    "id": 74,
+    "category": "🌱 Valeurs & Empathie",
+    "text": "Respecter un « non » immédiatement, sans insister ni faire culpabiliser l'autre",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Consentement & Respect"
+  },
+  {
+    "id": 75,
+    "category": "🌱 Valeurs & Empathie",
+    "text": "Être super gentil(le) uniquement avec les personnes dont on peut tirer un intérêt",
+    "polarity": "red",
+    "weight": 3,
+    "quick": false,
+    "badge": "Opportuniste"
+  },
+  {
+    "id": 76,
+    "category": "🌱 Valeurs & Empathie",
+    "text": "Travailler sur ses propres défauts et chercher à devenir une meilleure personne",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Remise en question"
+  },
+  {
+    "id": 77,
+    "category": "🌱 Valeurs & Empathie",
+    "text": "Juger le physique ou le style des passants dans la rue à voix haute",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Tribunal de la mode"
+  },
+  {
+    "id": 78,
+    "category": "🌱 Valeurs & Empathie",
+    "text": "Tenir ses promesses, même les petites quand personne ne vérifie",
+    "polarity": "green",
+    "weight": 3,
+    "quick": false,
+    "badge": "Parole d'or"
+  },
+  {
+    "id": 79,
+    "category": "🌱 Valeurs & Empathie",
+    "text": "Se victimiser en permanence en pensant que le monde entier est contre soi",
+    "polarity": "red",
+    "weight": 2,
+    "quick": false,
+    "badge": "Calimero"
+  },
+  {
+    "id": 80,
+    "category": "🌱 Valeurs & Empathie",
+    "text": "Savoir exprimer sa gratitude et remercier les gens qui comptent dans sa vie",
+    "polarity": "green",
+    "weight": 2,
+    "quick": false,
+    "badge": "Gratitude"
+  }
+];
+let userAnswers = new Array(80).fill(0);
+let friendData = null;
+let viewingFriendOnly = false;
+let questionMode = 'full';
+let viewMode = 'card';
+let currentIndex = 0;
+let selectedCategoryFilter = 'ALL';
+
+const ANS_LABELS = {
+  1: 'Oui',
+  2: 'Peut-être',
+  3: 'Un peu',
+  4: 'Non'
+};
+
+function getActiveQuestions() {
+  if (questionMode === 'quick') {
+    return QUESTIONS.filter(q => q.quick);
+  }
+  return QUESTIONS;
+}
+
+function encodeAnswers(arr) {
+  let out = '';
+  for (let i = 0; i < 80; i += 2) {
+    const a = arr[i] || 0;
+    const b = arr[i + 1] || 0;
+    const code = a * 5 + b;
+    out += String.fromCharCode(97 + code);
+  }
+  return out;
+}
+
+function decodeAnswers(str) {
+  if (!str || str.length !== 40) return null;
+  const out = new Array(80).fill(0);
+  for (let i = 0; i < 40; i++) {
+    const code = str.charCodeAt(i) - 97;
+    if (code < 0 || code >= 25) return null;
+    out[i * 2] = Math.floor(code / 5);
+    out[i * 2 + 1] = code % 5;
+  }
+  return out;
+}
+
+function computeProfile(answersArr) {
+  let greenPoints = 0;
+  let redPoints = 0;
+  let answeredCount = 0;
+
+  const catStats = {};
+  const triggeredReds = [];
+  const triggeredGreens = [];
+
+  QUESTIONS.forEach((q, idx) => {
+    if (!catStats[q.category]) {
+      catStats[q.category] = { green: 0, red: 0, answered: 0, total: 0 };
+    }
+    catStats[q.category].total += 1;
+
+    const ans = answersArr[idx];
+    if (!ans) return;
+
+    answeredCount++;
+    catStats[q.category].answered += 1;
+
+    const agreeMap = { 1: 1.0, 2: 0.65, 3: 0.35, 4: 0.0 };
+    const agree = agreeMap[ans];
+    const w = q.weight;
+
+    let qGreen = 0;
+    let qRed = 0;
+
+    if (q.polarity === 'red') {
+      qRed = agree * w;
+      qGreen = (1 - agree) * w;
+
+      if (ans === 1 || ans === 2 || ans === 3) {
+        triggeredReds.push({
+          q,
+          ans,
+          ansLabel: ANS_LABELS[ans],
+          severity: qRed + 0.5
+        });
+      } else if (ans === 4) {
+        triggeredGreens.push({
+          q,
+          ans,
+          ansLabel: 'Non (Esquivé !)',
+          strength: w * 0.9
+        });
+      }
+    } else {
+      qGreen = agree * w;
+      qRed = (1 - agree) * w;
+
+      if (ans === 1 || ans === 2) {
+        triggeredGreens.push({
+          q,
+          ans,
+          ansLabel: ANS_LABELS[ans],
+          strength: qGreen + 0.5
+        });
+      } else if (ans === 4) {
+        triggeredReds.push({
+          q,
+          ans,
+          ansLabel: 'Non (Aïe)',
+          severity: w * 0.95
+        });
+      }
+    }
+
+    greenPoints += qGreen;
+    redPoints += qRed;
+    catStats[q.category].green += qGreen;
+    catStats[q.category].red += qRed;
+  });
+
+  const totalPts = greenPoints + redPoints;
+  const greenPct = totalPts > 0 ? Math.round((greenPoints / totalPts) * 100) : 50;
+  const redPct = 100 - greenPct;
+
+  triggeredReds.sort((a, b) => b.severity - a.severity);
+  triggeredGreens.sort((a, b) => b.strength - a.strength);
+
+  return {
+    greenPct,
+    redPct,
+    answeredCount,
+    catStats,
+    topReds: triggeredReds.slice(0, 6),
+    topGreens: triggeredGreens.slice(0, 6)
+  };
+}
+
+function getVerdictInfo(greenPct) {
+  if (greenPct >= 88) {
+    return {
+      tag: "PERLE RARE CERTIFIÉE 🟢👑",
+      title: "L'Ange Gardien (Green Flag Suprême 😇)",
+      desc: "Incroyable mais vrai : tu es une personne ultra saine, loyale, rassurante et mature. Tes potes et ton/ta partenaire ont gagné au loto avec toi !"
+    };
+  } else if (greenPct >= 75) {
+    return {
+      tag: "VALEUR SÛRE 🟢✨",
+      title: "Le Green Flag Solide (Avec 2-3 petits défauts humains)",
+      desc: "Franchement propre ! Tu sais communiquer, tu respectes les autres et tu es fiable. Tu as deux ou trois petits travers marrants, mais rien de toxique."
+    };
+  } else if (greenPct >= 60) {
+    return {
+      tag: "HUMAIN(E) ÉQUILIBRÉ(E) 👀",
+      title: "Mi-Ange Mi-Démon (Majorité Green Flag, mais attention !)",
+      desc: "Globalement tu es quelqu'un de bien, mais tu as quelques petits Red Flags bien cachés (un brin de mauvaise foi, de jalousie ou d'ego) qui pimentent le quotidien !"
+    };
+  } else if (greenPct >= 45) {
+    return {
+      tag: "ZONE ORANGE CLIGNOTANTE ⚠️",
+      title: "Le Chaos Charmant (50/50 Green & Red Flag)",
+      desc: "Avec toi, c'est les montagnes russes émotionnelles ! Capable du meilleur comme des pires coups de tête. On ne s'ennuie jamais, mais il faut le cœur bien accroché."
+    };
+  } else if (greenPct >= 30) {
+    return {
+      tag: "ALERTE RED FLAG 🚩🔥",
+      title: "Red Flag Confirmé (Attachant(e) mais Dangereux/se)",
+      desc: "Oula ! Jalousie, mauvaise foi, ghosting ou petits dramas... Tu collectionnes les Red Flags comme des Pokémon. Au moins, tu es honnête dans tes réponses !"
+    };
+  } else {
+    return {
+      tag: "DANGER PUBLIC NUCLÉAIRE 🚩☢️",
+      title: "Le Boss Final des Red Flags 🚩👑",
+      desc: "Fuyez pauvres fous ! Tu as coché presque tous les Red Flags possibles. Soit tu trolles le test, soit tu es officiellement une légende du chaos !"
+    };
+  }
+}
+
+function saveUserName() {
+  const val = document.getElementById('userNameInput').value.trim();
+  try { localStorage.setItem('rf_username', val); } catch (e) {}
+}
+
+function saveProgressLocal() {
+  try { localStorage.setItem('rf_answers_80', JSON.stringify(userAnswers)); } catch (e) {}
+}
+
+function loadProgressLocal() {
+  try {
+    const savedName = localStorage.getItem('rf_username');
+    if (savedName) document.getElementById('userNameInput').value = savedName;
+    const savedAns = localStorage.getItem('rf_answers_80');
+    if (savedAns) {
+      const parsed = JSON.parse(savedAns);
+      if (Array.isArray(parsed) && parsed.length === 80) {
+        userAnswers = parsed;
+      }
+    }
+  } catch (e) {}
+}
+
+function checkUrlForFriendChallenge() {
+  const params = new URLSearchParams(window.location.search);
+  const friendCode = params.get('r');
+  const friendName = params.get('p') || 'Ton pote';
+
+  if (friendCode) {
+    const decoded = decodeAnswers(friendCode);
+    if (decoded) {
+      friendData = {
+        name: friendName,
+        answers: decoded,
+        profile: computeProfile(decoded)
+      };
+      const banner = document.getElementById('friendBanner');
+      banner.classList.add('active');
+      document.getElementById('friendBannerTitle').textContent =
+        `🔥 ${friendData.name} t'a envoyé son résultat : ${friendData.profile.greenPct}% Green Flag 🟢 / ${friendData.profile.redPct}% Red Flag 🚩 !`;
+      document.getElementById('friendBannerSub').textContent =
+        `Consulte le profil complet de ${friendData.name} ou réponds aux questions pour calculer votre % de compatibilité !`;
+    }
+  }
+}
+
+function setQuestionMode(mode) {
+  questionMode = mode;
+  currentIndex = 0;
+  document.getElementById('mode80Btn').classList.toggle('active', mode === 'full');
+  document.getElementById('mode20Btn').classList.toggle('active', mode === 'quick');
+  document.getElementById('headerModeLabel').textContent = mode === 'full' ? '80 Questions' : '20 Questions (Rapide)';
+  renderAll();
+}
+
+function setViewMode(mode) {
+  viewMode = mode;
+  document.getElementById('viewCardBtn').classList.toggle('active', mode === 'card');
+  document.getElementById('viewListBtn').classList.toggle('active', mode === 'list');
+  document.getElementById('resultsSection').classList.remove('active');
+  document.getElementById('quizProgressCard').style.display = 'block';
+
+  if (mode === 'card') {
+    document.getElementById('cardModeSection').style.display = 'block';
+    document.getElementById('listModeSection').classList.remove('active');
+  } else {
+    document.getElementById('cardModeSection').style.display = 'none';
+    document.getElementById('listModeSection').classList.add('active');
+  }
+  renderAll();
+}
+
+function updateProgressBar() {
+  const activeQs = getActiveQuestions();
+  const total = activeQs.length;
+  const answeredInMode = activeQs.filter(q => userAnswers[q.id - 1] !== 0).length;
+  const pct = Math.round((answeredInMode / total) * 100);
+
+  document.getElementById('progressText').textContent =
+    viewMode === 'card'
+      ? `Question ${currentIndex + 1} sur ${total}`
+      : `Mode Liste Complète (${total} questions)`;
+  document.getElementById('answeredCountBadge').textContent = `${answeredInMode} / ${total} répondues (${pct}%)`;
+  document.getElementById('progressBarFill').style.width = `${pct}%`;
+}
+
+function renderCardView() {
+  const activeQs = getActiveQuestions();
+  if (currentIndex >= activeQs.length) currentIndex = activeQs.length - 1;
+  if (currentIndex < 0) currentIndex = 0;
+
+  const q = activeQs[currentIndex];
+  const currentAns = userAnswers[q.id - 1];
+
+  document.getElementById('qCategoryBadge').textContent = q.category;
+  document.getElementById('qNumberBadge').textContent = `Question #${currentIndex + 1} / ${activeQs.length} • ${q.badge}`;
+  document.getElementById('qTextDisplay').textContent = q.text;
+
+  const classes = {
+    1: 'selected-oui',
+    2: 'selected-peutetre',
+    3: 'selected-unpeu',
+    4: 'selected-non'
+  };
+
+  for (let code = 1; code <= 4; code++) {
+    const btn = document.getElementById(`ansBtn_${code}`);
+    btn.className = 'answer-btn';
+    if (currentAns === code) {
+      btn.classList.add(classes[code]);
+    }
+  }
+
+  document.getElementById('prevQBtn').disabled = currentIndex === 0;
+  document.getElementById('prevQBtn').style.opacity = currentIndex === 0 ? '0.45' : '1';
+
+  const dotsGrid = document.getElementById('qDotsGrid');
+  dotsGrid.innerHTML = activeQs.map((item, idx) => {
+    const isAns = userAnswers[item.id - 1] !== 0;
+    const isCur = idx === currentIndex;
+    return `<button class="q-dot ${isAns ? 'answered' : ''} ${isCur ? 'current' : ''}" onclick="jumpToQuestion(${idx})" title="Question ${idx + 1}">${idx + 1}</button>`;
+  }).join('');
+}
+
+function renderListView() {
+  const activeQs = getActiveQuestions();
+  const categories = ['ALL', ...new Set(activeQs.map(q => q.category))];
+
+  const filterBar = document.getElementById('categoryFiltersBar');
+  filterBar.innerHTML = categories.map((cat, idx) => {
+    const label = cat === 'ALL' ? `Toutes (${activeQs.length})` : cat;
+    const activeClass = selectedCategoryFilter === cat ? 'active' : '';
+    return `<button class="cat-filter-btn ${activeClass}" data-cat-idx="${idx}" onclick="setCategoryByIdx(${idx})">${label}</button>`;
+  }).join('');
+
+  window._catList = categories;
+
+  const filtered = selectedCategoryFilter === 'ALL'
+    ? activeQs
+    : activeQs.filter(q => q.category === selectedCategoryFilter);
+
+  const classes = {
+    1: 'selected-oui',
+    2: 'selected-peutetre',
+    3: 'selected-unpeu',
+    4: 'selected-non'
+  };
+
+  const listContainer = document.getElementById('questionsListContainer');
+  listContainer.innerHTML = filtered.map(q => {
+    const ans = userAnswers[q.id - 1];
+    return `
+      <div class="list-item-card ${ans ? 'answered-row' : ''}" id="listRow_${q.id}">
+        <div class="list-item-left">
+          <div class="list-item-meta">
+            <span>#${q.id}</span>
+            <span>•</span>
+            <span>${q.category}</span>
+            <span>•</span>
+            <span style="color:#a78bfa;">${q.badge}</span>
+          </div>
+          <div class="list-item-text">${q.text}</div>
+        </div>
+        <div class="list-item-actions">
+          <button class="mini-ans-btn ${ans === 1 ? classes[1] : ''}" onclick="selectListAnswer(${q.id}, 1)">✅ Oui</button>
+          <button class="mini-ans-btn ${ans === 2 ? classes[2] : ''}" onclick="selectListAnswer(${q.id}, 2)">🤔 Peut-être</button>
+          <button class="mini-ans-btn ${ans === 3 ? classes[3] : ''}" onclick="selectListAnswer(${q.id}, 3)">🤏 Un peu</button>
+          <button class="mini-ans-btn ${ans === 4 ? classes[4] : ''}" onclick="selectListAnswer(${q.id}, 4)">❌ Non</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function setCategoryByIdx(idx) {
+  if (window._catList && window._catList[idx]) {
+    selectedCategoryFilter = window._catList[idx];
+    renderListView();
+  }
+}
+
+function selectAnswer(ansCode) {
+  const activeQs = getActiveQuestions();
+  const q = activeQs[currentIndex];
+  userAnswers[q.id - 1] = ansCode;
+  viewingFriendOnly = false;
+  saveProgressLocal();
+  updateProgressBar();
+  renderCardView();
+
+  const autoNext = document.getElementById('autoNextCheckbox').checked;
+  if (autoNext) {
+    setTimeout(() => {
+      if (currentIndex < activeQs.length - 1) {
+        currentIndex++;
+        updateProgressBar();
+        renderCardView();
+      } else {
+        showResultsNow();
+      }
+    }, 190);
+  }
+}
+
+function selectListAnswer(qId, ansCode) {
+  userAnswers[qId - 1] = ansCode;
+  viewingFriendOnly = false;
+  saveProgressLocal();
+  updateProgressBar();
+  renderListView();
+}
+
+function prevQuestion() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    updateProgressBar();
+    renderCardView();
+  }
+}
+
+function nextQuestion() {
+  const activeQs = getActiveQuestions();
+  if (currentIndex < activeQs.length - 1) {
+    currentIndex++;
+    updateProgressBar();
+    renderCardView();
+  } else {
+    showResultsNow();
+  }
+}
+
+function jumpToQuestion(idx) {
+  currentIndex = idx;
+  updateProgressBar();
+  renderCardView();
+}
+
+function viewFriendProfileDirectly() {
+  if (!friendData) return;
+  viewingFriendOnly = true;
+  showResultsNow(true);
+}
+
+function startTestAgainstFriend() {
+  viewingFriendOnly = false;
+  backToQuiz();
+  showToast(`À toi de jouer ! Réponds aux questions pour te comparer à ${friendData.name} ⚔️`);
+}
+
+function showResultsNow(forceFriendView = false) {
+  const isFriendSolo = forceFriendView && friendData;
+  const targetAnswers = isFriendSolo ? friendData.answers : userAnswers;
+  const profile = computeProfile(targetAnswers);
+
+  if (!isFriendSolo && profile.answeredCount === 0 && friendData) {
+    viewingFriendOnly = true;
+    return showResultsNow(true);
+  }
+
+  document.getElementById('cardModeSection').style.display = 'none';
+  document.getElementById('listModeSection').classList.remove('active');
+  document.getElementById('quizProgressCard').style.display = 'none';
+  document.getElementById('resultsSection').classList.add('active');
+
+  const userName = isFriendSolo
+    ? friendData.name
+    : (document.getElementById('userNameInput').value.trim() || 'Ton Profil');
+
+  const verdict = getVerdictInfo(profile.greenPct);
+  document.getElementById('verdictTag').textContent =
+    `${userName.toUpperCase()} • ${verdict.tag} (${profile.answeredCount} questions répondues)`;
+  document.getElementById('verdictTitle').textContent = verdict.title;
+  document.getElementById('verdictDesc').textContent = verdict.desc;
+
+  document.getElementById('greenPctDisplay').textContent = `${profile.greenPct}%`;
+  document.getElementById('redPctDisplay').textContent = `${profile.redPct}%`;
+  document.getElementById('tugGreenFill').style.width = `${profile.greenPct}%`;
+
+  const catContainer = document.getElementById('categoryBreakdownContainer');
+  catContainer.innerHTML = Object.entries(profile.catStats).map(([catName, st]) => {
+    const tot = st.green + st.red;
+    const gPct = tot > 0 ? Math.round((st.green / tot) * 100) : 50;
+    const rPct = 100 - gPct;
+    return `
+      <div class="cat-bar-row">
+        <div class="cat-bar-top">
+          <span>${catName}</span>
+          <span>
+            <strong style="color:#34d399;">${gPct}% 🟢</strong>
+            <span style="color:#64748b;"> / </span>
+            <strong style="color:#fb7185;">${rPct}% 🚩</strong>
+          </span>
+        </div>
+        <div class="cat-bar-track">
+          <div class="cat-bar-fill" style="width:${gPct}%;"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const redListEl = document.getElementById('topRedFlagsList');
+  if (profile.topReds.length === 0) {
+    redListEl.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Aucun Red Flag majeur détecté pour l'instant ! Un vrai petit ange 😇</p>`;
+  } else {
+    redListEl.innerHTML = profile.topReds.map(item => `
+      <div class="flag-list-item red-item">
+        <div>
+          <div style="font-weight:700; color:#fff;">🚩 ${item.q.text}</div>
+          <div style="font-size:0.75rem; color:#fda4af; margin-top:2px;">${item.q.category} • ${item.q.badge}</div>
+        </div>
+        <span class="flag-ans-tag">${item.ansLabel}</span>
+      </div>
+    `).join('');
+  }
+
+  const greenListEl = document.getElementById('topGreenFlagsList');
+  if (profile.topGreens.length === 0) {
+    greenListEl.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">Réponds à plus de questions pour afficher tes meilleurs Green Flags !</p>`;
+  } else {
+    greenListEl.innerHTML = profile.topGreens.map(item => `
+      <div class="flag-list-item green-item">
+        <div>
+          <div style="font-weight:700; color:#fff;">🟢 ${item.q.text}</div>
+          <div style="font-size:0.75rem; color:#6ee7b7; margin-top:2px;">${item.q.category} • ${item.q.badge}</div>
+        </div>
+        <span class="flag-ans-tag">${item.ansLabel}</span>
+      </div>
+    `).join('');
+  }
+
+  renderDuelComparison();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderDuelComparison() {
+  const duelCard = document.getElementById('duelComparisonCard');
+  const myProfile = computeProfile(userAnswers);
+
+  if (!friendData || myProfile.answeredCount === 0) {
+    duelCard.classList.remove('active');
+    return;
+  }
+
+  duelCard.classList.add('active');
+  const myName = document.getElementById('userNameInput').value.trim() || 'Toi';
+  const fName = friendData.name;
+  const fProfile = friendData.profile;
+
+  document.getElementById('duelPlayer1Name').textContent = myName;
+  document.getElementById('duelPlayer1Score').textContent = `${myProfile.greenPct}% 🟢`;
+  document.getElementById('duelPlayer1Red').textContent = `${myProfile.redPct}% 🚩 Red Flag`;
+
+  document.getElementById('duelPlayer2Name').textContent = fName;
+  document.getElementById('duelPlayer2Score').textContent = `${fProfile.greenPct}% 🟢`;
+  document.getElementById('duelPlayer2Red').textContent = `${fProfile.redPct}% 🚩 Red Flag`;
+
+  let commonCount = 0;
+  let similaritySum = 0;
+  const clashes = [];
+
+  for (let i = 0; i < 80; i++) {
+    const a1 = userAnswers[i];
+    const a2 = friendData.answers[i];
+    if (a1 && a2) {
+      commonCount++;
+      const diff = Math.abs(a1 - a2);
+      similaritySum += (1 - diff / 3);
+      if (diff >= 2) {
+        clashes.push({ q: QUESTIONS[i], a1: ANS_LABELS[a1], a2: ANS_LABELS[a2] });
+      }
+    }
+  }
+
+  const compatPct = commonCount > 0 ? Math.round((similaritySum / commonCount) * 100) : 50;
+  const biggestRedWinner = myProfile.redPct > fProfile.redPct
+    ? `${myName} est le plus gros Red Flag (+${myProfile.redPct - fProfile.redPct}% 🚩)`
+    : (fProfile.redPct > myProfile.redPct
+      ? `${fName} est le plus gros Red Flag (+${fProfile.redPct - myProfile.redPct}% 🚩)`
+      : `Égalité parfaite entre vous deux !`);
+
+  document.getElementById('duelHeadline').textContent =
+    `Compatibilité : ${compatPct}% entre ${myName} & ${fName}`;
+  document.getElementById('duelSubtext').textContent =
+    `${biggestRedWinner} • Basé sur ${commonCount} questions en commun`;
+
+  const clashContainer = document.getElementById('duelClashesList');
+  if (clashes.length > 0) {
+    clashContainer.innerHTML = `
+      <div style="font-size:0.85rem; font-weight:800; margin-bottom:8px; color:#fda4af;">⚡ Vos plus gros désaccords (${clashes.length}) :</div>
+      ${clashes.slice(0, 4).map(c => `
+        <div class="flag-list-item red-item" style="margin-bottom:6px;">
+          <span>${c.q.text}</span>
+          <span class="flag-ans-tag">${myName}: ${c.a1} vs ${fName}: ${c.a2}</span>
+        </div>
+      `).join('')}
+    `;
+  } else {
+    clashContainer.innerHTML = `<div style="font-size:0.85rem; color:#6ee7b7; text-align:center;">🤝 Vous êtes d'accord sur quasiment toutes les questions !</div>`;
+  }
+}
+
+function backToQuiz() {
+  document.getElementById('resultsSection').classList.remove('active');
+  document.getElementById('quizProgressCard').style.display = 'block';
+  if (viewMode === 'card') {
+    document.getElementById('cardModeSection').style.display = 'block';
+  } else {
+    document.getElementById('listModeSection').classList.add('active');
+  }
+  renderAll();
+}
+
+function resetAllAnswers() {
+  userAnswers = new Array(80).fill(0);
+  currentIndex = 0;
+  viewingFriendOnly = false;
+  saveProgressLocal();
+  backToQuiz();
+  showToast('Test réinitialisé à zéro ! 🔄');
+}
+
+function getBaseUrl() {
+  return window.location.origin + window.location.pathname;
+}
+
+function buildShareResultUrl() {
+  const name = document.getElementById('userNameInput').value.trim() || 'TonPote';
+  const code = encodeAnswers(userAnswers);
+  const url = new URL(getBaseUrl());
+  url.searchParams.set('p', name);
+  url.searchParams.set('r', code);
+  return url.toString();
+}
+
+function copyTextToClipboard(text, toastMsg) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(toastMsg);
+    }).catch(() => fallbackCopy(text, toastMsg));
+  } else {
+    fallbackCopy(text, toastMsg);
+  }
+}
+
+function fallbackCopy(text, toastMsg) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  showToast(toastMsg);
+}
+
+function copyShareResultLink() {
+  const link = buildShareResultUrl();
+  copyTextToClipboard(link, 'Lien de ton résultat copié ! Envoie-le à ton pote 🔥');
+}
+
+function copyCleanTestLink() {
+  const link = getBaseUrl();
+  copyTextToClipboard(link, 'Lien du test copié dans le presse-papier ! 🔗');
+}
+
+function copyWhatsAppSummary() {
+  const profile = computeProfile(userAnswers);
+  const verdict = getVerdictInfo(profile.greenPct);
+  const name = document.getElementById('userNameInput').value.trim() || 'Moi';
+  const link = buildShareResultUrl();
+  const text = `🟢🚩 *Test Green Flag / Red Flag (80 Questions)*\n` +
+    `👤 Résultat de *${name}* : *${profile.greenPct}% Green Flag 🟢* / *${profile.redPct}% Red Flag 🚩*\n` +
+    `🏆 Verdict : _${verdict.title}_\n\n` +
+    `👉 Découvre mes pires Red Flags et fais le test pour comparer notre compatibilité : ${link}`;
+  copyTextToClipboard(text, 'Résumé + lien copiés pour WhatsApp / Discord / Insta ! 💬');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toastBox');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+function renderAll() {
+  updateProgressBar();
+  if (viewMode === 'card') {
+    renderCardView();
+  } else {
+    renderListView();
+  }
+}
+
+window.addEventListener('keydown', (e) => {
+  if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+  if (viewMode !== 'card' || document.getElementById('resultsSection').classList.contains('active')) return;
+
+  if (e.key === '1') selectAnswer(1);
+  else if (e.key === '2') selectAnswer(2);
+  else if (e.key === '3') selectAnswer(3);
+  else if (e.key === '4') selectAnswer(4);
+  else if (e.key === 'ArrowLeft') prevQuestion();
+  else if (e.key === 'ArrowRight') nextQuestion();
+});
+
+loadProgressLocal();
+checkUrlForFriendChallenge();
+renderAll();
+
+  </script>
+</body>
+</html>
